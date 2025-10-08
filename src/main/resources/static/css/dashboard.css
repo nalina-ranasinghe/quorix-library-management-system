@@ -1,11 +1,8 @@
-/* ================================================
-   DASHBOARD LAYOUT & THEME - FINAL VERSION
-   ================================================ */
 :root {
     --sidebar-bg-gradient: linear-gradient(160deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-    --primary-accent: #3B82F6; /* Blue */
+    --primary-accent: #3B82F6;
     --text-primary-light: #FFFFFF;
-    --text-secondary-light: #E5E7EB; /* Lighter gray for sub-text */
+    --text-secondary-light: #E5E7EB;
     --border-color: rgba(255, 255, 255, 0.2);
     --hover-bg: rgba(255, 255, 255, 0.1);
 }
@@ -17,34 +14,23 @@ body {
     background-attachment: fixed;
     font-family: "Poppins", sans-serif;
     color: var(--text-primary-light);
-    overflow: hidden;
-    position: relative;
+    position: relative; /* Keep this for positioning context */
 }
 
-/* ADDED: Dark overlay for readability */
+/* UPDATED: Overlay with explicit z-index */
 body::before {
     content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity (0.5 = 50%) as needed */
-    z-index: 0;
+    position: fixed; /* Use fixed to ensure it covers the entire viewport */
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker for better contrast */
+    z-index: -1; /* Push it behind all content */
 }
 
-/* Make sure all direct children of body are on top of the overlay */
 .dashboard-wrapper {
-    position: relative;
-    z-index: 1;
     display: flex;
     min-height: 100vh;
 }
 
-
-/* ================================================
-   SIDEBAR NAVIGATION
-   ================================================ */
 .sidebar {
     width: 260px;
     background: var(--sidebar-bg-gradient);
@@ -59,74 +45,12 @@ body::before {
     flex-direction: column;
     z-index: 10;
 }
-.sidebar-header{display:flex;align-items:center;padding:0 .5rem 1.5rem .5rem;margin-bottom:1rem; border-bottom: 1px solid var(--border-color);}
-.sidebar-logo{width:120px}
-.sidebar-nav{list-style:none;padding:0;margin:0;flex-grow:1}
-.nav-item a{display:flex;align-items:center;padding:.875rem 1rem;text-decoration:none;border-radius:.5rem;margin-bottom:.5rem;transition:all .2s ease-in-out;font-weight:500; color: var(--text-secondary-light);}
-.nav-item a:hover{background-color:var(--hover-bg);color:#fff}
-.nav-item a.active{background-color:var(--primary-accent);color:#fff;box-shadow:0 4px 12px rgba(59,130,246,.3)}
-.nav-item a .nav-icon{margin-right:1rem;width:20px;text-align:center}
-.sidebar-footer{padding:1rem 0;border-top:1px solid var(--border-color)}
 
-/* ================================================
-   MAIN CONTENT AREA
-   ================================================ */
 .main-content {
     margin-left: 260px;
     flex-grow: 1;
     padding: 2.5rem;
     background-color: transparent;
 }
-.content-header{margin-bottom:2rem; display:flex;justify-content:space-between;align-items:center}
-.content-header h1{font-size:1.75rem;font-weight:700;color:var(--text-primary-light);text-shadow:0 2px 4px rgba(0,0,0,.5)} /* UPDATED: Stronger text shadow */
-
-/* ================================================
-   GLASS STYLE COMPONENTS
-   ================================================ */
-.card {
-    border-radius: 35px;
-    background: linear-gradient(124deg, rgba(229, 229, 229, 0.15) -6.89%, rgba(217, 217, 217, 0.00) 115.76%);
-    box-shadow: 5px 4px 4px 0px rgba(0, 0, 0, 0.30);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid var(--border-color);
-    transition: all 0.3s ease;
-    color: var(--text-primary-light);
-    overflow: hidden;
-}
-.card:hover{transform:translateY(-5px);box-shadow:5px 9px 15px 0 rgba(0,0,0,.35)}
-.card-body, .card-header, .card-footer {background-color: transparent; padding: 2rem;}
-.card-title { color: var(--text-primary-light); text-shadow: 0 1px 3px rgba(0,0,0,0.4); } /* ADDED: Text shadow */
-.card-text { color: var(--text-primary-light); text-shadow: 0 1px 3px rgba(0,0,0,0.4); } /* ADDED: Text shadow */
-
-.alert {
-    background: linear-gradient(124deg, rgba(229, 229, 229, 0.25) -6.89%, rgba(217, 217, 217, 0.05) 115.76%);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    color: var(--text-primary-light);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.4); /* ADDED: Text shadow */
-}
-
-/* ======================================================
-   TABLE STYLES
-   ====================================================== */
-.table {
-    background-color: transparent;
-    border: none;
-}
-.card .table th,
-.card .table td {
-    background-color: transparent !important;
-    color: var(--text-primary-light) !important;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.4); /* UPDATED: Consistent text shadow */
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
-.card .table tbody tr:first-child > td { border-top: none; }
-.card .table thead { background-color: rgba(255, 255, 255, 0.1); }
-.card .table th { border-bottom: 2px solid rgba(255, 255, 255, 0.3) !important; }
-.card .table-hover > tbody > tr:hover { background: rgba(229, 229, 229, 0.1); }
-
-/* (Other styles remain the same) */
-.form-control,.form-select{border-radius:.5rem;border:1px solid rgba(255,255,255,.4);background-color:rgba(255,255,255,.3);color:var(--text-primary);transition:all .2s ease-in-out}.form-control::placeholder{color:var(--text-secondary);opacity:.8}.form-control:focus,.form-select:focus{border-color:var(--primary-accent);background-color:rgba(255,255,255,.5);box-shadow:0 0 0 3px rgba(59,130,246,.2)}.animate-fade-in-up{animation:fadeInUp .8s ease-out forwards;opacity:0}@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+/* (The rest of the file remains the same) */
+.sidebar-header{display:flex;align-items:center;padding:0 .5rem 1.5rem .5rem;margin-bottom:1rem; border-bottom: 1px solid var(--border-color);}.sidebar-logo{width:120px}.sidebar-nav{list-style:none;padding:0;margin:0;flex-grow:1}.nav-item a{display:flex;align-items:center;padding:.875rem 1rem;text-decoration:none;border-radius:.5rem;margin-bottom:.5rem;transition:all .2s ease-in-out;font-weight:500; color: var(--text-secondary-light);}.nav-item a:hover{background-color:var(--hover-bg);color:#fff}.nav-item a.active{background-color:var(--primary-accent);color:#fff;box-shadow:0 4px 12px rgba(59,130,246,.3)}.nav-item a .nav-icon{margin-right:1rem;width:20px;text-align:center}.sidebar-footer{padding:1rem 0;border-top:1px solid var(--border-color)}.content-header{margin-bottom:2rem; display:flex;justify-content:space-between;align-items:center}.content-header h1{font-size:1.75rem;font-weight:700;color:var(--text-primary-light);text-shadow:0 2px 4px rgba(0,0,0,.5)}.card{border-radius:35px;background:linear-gradient(124deg, rgba(229, 229, 229, 0.15) -6.89%, rgba(217, 217, 217, 0.00) 115.76%);box-shadow:5px 4px 4px 0px rgba(0, 0, 0, 0.30);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border:1px solid var(--border-color);transition:all .3s ease;color:var(--text-primary-light);overflow:hidden}.card:hover{transform:translateY(-5px);box-shadow:5px 9px 15px 0 rgba(0,0,0,.35)}.card-body, .card-header, .card-footer {background-color: transparent; padding: 2rem;}.card-title { color: var(--text-primary-light); text-shadow: 0 1px 3px rgba(0,0,0,0.4); }.card-text { color: var(--text-primary-light); text-shadow: 0 1px 3px rgba(0,0,0,0.4); }.alert{background:linear-gradient(124deg, rgba(229, 229, 229, 0.25) -6.89%, rgba(217, 217, 217, 0.05) 115.76%);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border:1px solid var(--border-color);border-radius:20px;color:var(--text-primary-light);text-shadow:0 1px 2px rgba(0,0,0,0.4)}.table{background-color:transparent;border:none}.card .table th,.card .table td{background-color:transparent !important;color:var(--text-primary-light) !important;text-shadow:0 1px 3px rgba(0,0,0,0.4);border-top:1px solid rgba(255, 255, 255, 0.2)}.card .table tbody tr:first-child > td{border-top:none}.card .table thead{background-color:rgba(255, 255, 255, 0.1)}.card .table th{border-bottom:2px solid rgba(255, 255, 255, 0.3) !important}.card .table-hover > tbody > tr:hover{background:rgba(229, 229, 229, 0.1)}.animate-fade-in-up{animation:fadeInUp .8s ease-out forwards;opacity:0}@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}

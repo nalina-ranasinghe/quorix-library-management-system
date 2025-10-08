@@ -1,0 +1,194 @@
+:root {
+    --text-primary-light: #FFFFFF;
+    --text-secondary-light: #E5E7EB;
+    --border-color: rgba(255, 255, 255, 0.2);
+    --primary-accent: #3B82F6; /* Blue */
+    --hover-bg: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    background-image: url('../images/library-hallway.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: "Poppins", sans-serif;
+    color: var(--text-primary-light);
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed; /* Use fixed to ensure it covers the entire viewport */
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker for better contrast */
+    z-index: -1; /* Push it behind all content */
+}
+
+/* --- Header Styles --- */
+.home-header {
+    position: sticky; /* UPDATED: Changed from 'fixed' to 'sticky' */
+    top: 0;           /* This tells it to stick to the top of the viewport */
+    left: 0;
+    width: 100%;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 1000;
+}
+
+.header-logo img {
+    height: 40px;
+}
+
+.search-bar {
+    width: 100%;
+    max-width: 500px;
+}
+
+.search-bar .form-control {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--border-color);
+    color: var(--text-primary-light);
+    border-radius: 50px;
+}
+.search-bar .form-control:focus {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: none;
+    border-color: var(--primary-accent);
+}
+
+.search-bar .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+}
+
+.user-menu-icon {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid var(--border-color);
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    width: 200px;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.user-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-dropdown a {
+    display: block;
+    padding: 0.75rem 1.25rem;
+    color: var(--text-secondary-light);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+.user-dropdown a:hover {
+    background: var(--hover-bg);
+    color: var(--text-primary-light);
+}
+
+/* --- Main Content & Book Cards --- */
+main {
+    padding-top: 2rem; /* UPDATED: Removed the large fixed padding, just need a little space now */
+}
+
+.book-card {
+    background: linear-gradient(124deg, rgba(229, 229, 229, 0.1) -6.89%, rgba(217, 217, 217, 0.00) 115.76%);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.book-card-img-wrapper {
+    height: 300px;
+    background-color: rgba(0,0,0,0.2);
+    padding: 10px;
+}
+
+.book-card-img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
+.book-card .card-body {
+    flex-grow: 1;
+    padding: 1.25rem;
+}
+
+
+.book-card .card-footer {
+    padding: 0 1.25rem 1.25rem 1.25rem;
+}
+
+
+/* --- Footer --- */
+.footer {
+    padding: 3rem 2rem;
+    margin-top: 3rem;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-top: 1px solid var(--border-color);
+}
+
+/* --- Main Content & Book Cards --- */
+main {
+    padding-top: 120px;
+}
+
+/* ADD THIS NEW RULE FOR GENERIC CARDS */
+.card {
+    background: linear-gradient(124deg, rgba(229, 229, 229, 0.15) -6.89%, rgba(217, 217, 217, 0.00) 115.76%);
+    border: 1px solid var(--border-color);
+    border-radius: 35px;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 5px 4px 10px rgba(0,0,0,0.3);
+    color: var(--text-primary-light);
+}
+/* (Your existing .book-card styles can remain below this) */
+
+.book-card {
+    /* ... existing styles ... */
+}

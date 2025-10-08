@@ -1,5 +1,7 @@
 package com.library.app.controller;
 
+import com.library.app.entity.User;
+import com.library.app.service.BookService;
 import com.library.app.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -8,30 +10,38 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+
+import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
 public class ViewController {
 
     private final UserService userService;
+    private final BookService bookService; // Injected BookService
 
     @GetMapping("/")
     public String index() {
-        return "index"; // intro page with modal
+        return "index";
     }
 
+    // UPDATED Home Page Endpoint
     @GetMapping("/home")
-    public String home() {
+    public String home(Model model, Principal principal) {
+        // Add the list of all books to the model
+        model.addAttribute("books", bookService.getAllBooks());
+
+        // Get the logged-in user's details and add them to the model
+        if (principal != null) {
+            userService.findUserByUsername(principal.getName())
+                    .ifPresent(user -> model.addAttribute("currentUser", user));
+        }
+
         return "home";
     }
 
-    @GetMapping("/staff")
-    public String staff() {
-        return "staff";
-    }
-
+    // --- PASSWORD RESET ENDPOINTS ---
+    // (Keep all your existing password reset methods here)
     @GetMapping("/forgot-password")
     public String showForgotPasswordForm() {
         return "forgot-password";
@@ -40,7 +50,6 @@ public class ViewController {
     @PostMapping("/forgot-password")
     public String processForgotPassword(@RequestParam String username, @RequestParam String email, RedirectAttributes ra) {
         if (userService.verifyUserForPasswordReset(username, email)) {
-            // If valid, redirect to the reset page with username as a parameter
             ra.addAttribute("username", username);
             return "redirect:/reset-password";
         } else {
@@ -59,11 +68,48 @@ public class ViewController {
     public String processResetPassword(@RequestParam String username, @RequestParam String password, @RequestParam String confirmPassword, RedirectAttributes ra) {
         if (!password.equals(confirmPassword)) {
             ra.addFlashAttribute("errorMessage", "Passwords do not match.");
-            ra.addAttribute("username", username); // Resend username on error
+            ra.addAttribute("username", username);
             return "redirect:/reset-password";
         }
         userService.resetUserPassword(username, password);
         ra.addFlashAttribute("successMessage", "Your password has been reset successfully. Please sign in.");
-        return "redirect:/"; // Redirect to login page
+        return "redirect:/";
+    }
+
+    // --- SETTINGS PAGE ENDPOINTS ---
+
+    @GetMapping("/settings")
+    public String showSettingsForm(Model model, Principal principal, RedirectAttributes ra) {
+        if (principal == null) {
+            ra.addFlashAttribute("errorMessage", "Please log in to access settings.");
+            return "redirect:/"; // Redirect to login if not authenticated
+        }
+        userService.findUserByUsername(principal.getName())
+                .ifPresent(user -> model.addAttribute("currentUser", user));
+        return "settings";
+    }
+
+    @PostMapping("/settings")
+    public String processSettingsForm(@RequestParam String fullName,
+                                      @RequestParam String email,
+                                      @RequestParam String phone,
+                                      @RequestParam(required = false) String newPassword,
+                                      @RequestParam(required = false) String confirmPassword,
+                                      Principal principal,
+                                      RedirectAttributes ra) {
+        try {
+            // Check if new passwords match (if provided)
+            if (newPassword != null && !newPassword.isEmpty() && !newPassword.equals(confirmPassword)) {
+                throw new IllegalArgumentException("New passwords do not match.");
+            }
+
+            userService.updateUserDetails(principal.getName(), fullName, email, phone, newPassword);
+            ra.addFlashAttribute("successMessage", "Your details have been updated successfully.");
+
+        } catch (IllegalArgumentException e) {
+            ra.addFlashAttribute("errorMessage", e.getMessage());
+        }
+
+        return "redirect:/settings";
     }
 }
