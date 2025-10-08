@@ -26,6 +26,8 @@ SecurityConfig {
                 .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+                        // UPDATED LINE
+                        .requestMatchers("/home", "/forgot-password", "/reset-password").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()

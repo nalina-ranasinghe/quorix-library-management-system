@@ -102,4 +102,18 @@ public class UserService {
     public void deleteUser(int id) {
         userRepo.deleteById(id);
     }
+
+    public boolean verifyUserForPasswordReset(String username, String email) {
+        return userRepo.findByUsernameIgnoreCase(username)
+                .map(user -> user.getEmail().equalsIgnoreCase(email))
+                .orElse(false);
+    }
+
+    @Transactional
+    public void resetUserPassword(String username, String newPassword) {
+        User user = userRepo.findByUsernameIgnoreCase(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        user.setPasswordHash(passwordEncoder.encode(newPassword));
+        userRepo.update(user);
+    }
 }
