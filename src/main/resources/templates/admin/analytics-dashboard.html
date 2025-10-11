@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout :: layout(~{::content})}">
+<head>
+    <title>Analytics Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/analytics.css}">
+</head>
+<body>
+<div th:fragment="content">
+    <div class="content-header">
+        <h1>Library Analytics Dashboard</h1>
+        <div class="header-actions">
+            <a th:href="@{/admin/reports}" class="btn btn-secondary">Back to Reports</a>
+            <button class="btn btn-success" onclick="exportAnalytics()">
+                <i class="fas fa-download me-1"></i>Export Analytics
+            </button>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-value" th:text="${analytics.totalActiveUsers}">0</div>
+                <div class="metric-label">Active Users</div>
+                <div class="metric-change trend-up">+12% this month</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-value" th:text="${analytics.monthlyBorrows}">0</div>
+                <div class="metric-label">Monthly Borrows</div>
+                <div class="metric-change trend-up">+8% this month</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-value" th:text="${analytics.overdueBooks}">0</div>
+                <div class="metric-label">Overdue Books</div>
+                <div class="metric-change trend-down">-5% this month</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-value" th:text="${analytics.availableBooks} + '/' + ${analytics.totalBooks}">0/0</div>
+                <div class="metric-label">Available/Total Books</div>
+                <div class="metric-change trend-neutral">85% Available</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Monthly Usage Trends</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="usageChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">User Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="userDistributionChart" width="200" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Users & Books -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Top Library Users (Last 30 Days)</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Borrow Count</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="user : ${analytics.topUsers}">
+                                <td th:text="${user.fullName}"></td>
+                                <td th:text="${user.borrowCount}"></td>
+                                <td>
+                                        <span th:classappend="${user.status == 'ACTIVE'} ? 'badge bg-success' : 'badge bg-warning'"
+                                              th:text="${user.status}"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Most Popular Books</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                            <tr>
+                                <th>Book Title</th>
+                                <th>Author</th>
+                                <th>Borrow Count</th>
+                                <th>Availability</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="book : ${analytics.popularBooks}">
+                                <td th:text="${book.title}"></td>
+                                <td th:text="${book.author}"></td>
+                                <td th:text="${book.borrowCount}"></td>
+                                <td>
+                                    <span th:if="${book.available}" class="badge bg-success">Available</span>
+                                    <span th:unless="${book.available}" class="badge bg-warning">Borrowed</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/analytics.js}"></script>
+</body>
+</html>

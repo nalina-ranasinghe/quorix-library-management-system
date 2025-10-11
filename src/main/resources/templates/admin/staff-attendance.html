@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout :: layout(~{::content})}">
+<head>
+    <!-- Add this line -->
+    <link rel="stylesheet" th:href="@{/css/attendance.css}">
+</head>
+<head>
+    <title>Staff Attendance</title>
+</head>
+<body>
+<div th:fragment="content">
+    <div class="content-header">
+        <h1>Staff Attendance Records</h1>
+        <a th:href="@{/admin}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+
+    <div class="card animate-fade-in-up">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Staff Check-in/Check-out Logs</h5>
+            <button class="btn btn-primary btn-sm" onclick="exportAttendance()">
+                <i class="fas fa-download me-1"></i>Export Report
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover" id="attendanceTable">
+                    <thead>
+                    <tr>
+                        <th>Staff Name</th>
+                        <th>Check-in Time</th>
+                        <th>Check-out Time</th>
+                        <th>Duration</th>
+                        <th>Notes</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="record : ${attendance}">
+                        <td th:text="${record.full_name}"></td>
+                        <td th:text="${#temporals.format(record.check_in_time, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${record.check_out_time != null} ?
+                                    ${#temporals.format(record.check_out_time, 'yyyy-MM-dd HH:mm')} :
+                                    'Not checked out'"></td>
+                        <td>
+                            <span th:if="${record.check_out_time != null}"
+                                  th:text="${#temporals.format(record.check_out_time, 'HH:mm')} + ' - ' +
+                                          ${#temporals.format(record.check_in_time, 'HH:mm')}"></span>
+                            <span th:unless="${record.check_out_time != null}" class="text-warning">Ongoing</span>
+                        </td>
+                        <td th:text="${record.notes} ?: 'No notes'"></td>
+                        <td>
+                            <span th:if="${record.check_out_time != null}" class="badge bg-success">Completed</span>
+                            <span th:unless="${record.check_out_time != null}" class="badge bg-warning">Active</span>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(attendance)}">
+                        <td colspan="6" class="text-center">No attendance records available</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function exportAttendance() {
+            // Simple CSV export functionality
+            const table = document.getElementById('attendanceTable');
+            let csv = [];
+
+            // Headers
+            const headers = [];
+            for (let i = 0; i < table.rows[0].cells.length; i++) {
+                headers.push(table.rows[0].cells[i].innerText);
+            }
+            csv.push(headers.join(','));
+
+            // Data rows
+            for (let i = 1; i < table.rows.length; i++) {
+                const row = [];
+                for (let j = 0; j < table.rows[i].cells.length; j++) {
+                    row.push(table.rows[i].cells[j].innerText);
+                }
+                csv.push(row.join(','));
+            }
+
+            // Download
+            const csvContent = "data:text/csv;charset=utf-8," + csv.join('\n');
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "staff_attendance.csv");
+            document.body.appendChild(link);
+            link.click();
+        }
+    </script>
+</div>
+</body>
+</html>

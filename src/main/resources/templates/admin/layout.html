@@ -30,6 +30,52 @@
                     <i class="fas fa-chart-line nav-icon"></i> Reports
                 </a>
             </li>
+            <!-- NEW: Report Logs Navigation -->
+            <li class="nav-item">
+                <a th:href="@{/admin/reports/log}" th:classappend="${requestURI == '/admin/reports/log' ? 'active' : ''}">
+                    <i class="fas fa-clipboard-list nav-icon"></i> Report Logs
+                </a>
+            </li>
+            <!-- NEW: Staff Attendance Navigation -->
+            <li class="nav-item">
+                <a th:href="@{/admin/staff-attendance}" th:classappend="${requestURI == '/admin/staff-attendance' ? 'active' : ''}">
+                    <i class="fas fa-user-check nav-icon"></i> Staff Attendance
+                </a>
+            </li>
+
+            <!-- Add this to your sidebar navigation -->
+            <li class="nav-item">
+                <a th:href="@{/admin/analytics}" th:classappend="${requestURI == '/admin/analytics' ? 'active' : ''}">
+                    <i class="fas fa-chart-bar nav-icon"></i> Analytics
+                </a>
+            </li>
+
+            <!-- Add these to your sidebar navigation -->
+            <li class="nav-item">
+                <a th:href="@{/admin/analytics}" th:classappend="${requestURI == '/admin/analytics' ? 'active' : ''}">
+                    <i class="fas fa-chart-bar nav-icon"></i> Analytics
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/admin/reports/automation}" th:classappend="${requestURI == '/admin/reports/automation' ? 'active' : ''}">
+                    <i class="fas fa-robot nav-icon"></i> Automated Reports
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/admin/membership/approval}" th:classappend="${requestURI == '/admin/membership/approval' ? 'active' : ''}">
+                    <i class="fas fa-user-check nav-icon"></i> Membership Approval
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/admin/reports/usage-patterns}" th:classappend="${requestURI == '/admin/reports/usage-patterns' ? 'active' : ''}">
+                    <i class="fas fa-chart-line nav-icon"></i> Usage Patterns
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/admin/reports/popular-books}" th:classappend="${requestURI == '/admin/reports/popular-books' ? 'active' : ''}">
+                    <i class="fas fa-book nav-icon"></i> Popular Books
+                </a>
+            </li>
         </ul>
         <div class="sidebar-footer">
             <form th:action="@{/logout}" method="post">

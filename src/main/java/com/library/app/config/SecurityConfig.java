@@ -1,3 +1,4 @@
+// Modified SecurityConfig.java (added /staff/** for STAFF role, /home for authenticated)
 package com.library.app.config;
 
 import com.library.app.service.CustomUserDetailsService;
@@ -15,8 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class
-SecurityConfig {
+public class SecurityConfig {
     private final RoleBasedAuthSuccessHandler successHandler;
     private final CustomUserDetailsService userDetailsService;
 
@@ -27,9 +27,10 @@ SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
                         // UPDATED LINE
-                        .requestMatchers("/home", "/forgot-password", "/reset-password").permitAll()
+                        .requestMatchers("/home", "/forgot-password", "/reset-password").authenticated()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/staff/**").hasRole("STAFF")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
@@ -49,8 +50,6 @@ SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+
+
 }

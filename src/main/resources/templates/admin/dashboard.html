@@ -35,6 +35,40 @@
                 </div>
             </div>
         </div>
+        <!-- NEW: Report Logs Card -->
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 animate-fade-in-up" style="animation-delay: 500ms;">
+                <div class="card-body text-center">
+                    <i class="fas fa-clipboard-list fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">Report Logs</h5>
+                    <p class="card-text">View history of generated reports and exports.</p>
+                    <a th:href="@{/admin/reports/log}" class="btn btn-info">View Logs</a>
+                </div>
+            </div>
+        </div>
+        <!-- NEW: Staff Attendance Card -->
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 animate-fade-in-up" style="animation-delay: 600ms;">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-check fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Staff Attendance</h5>
+                    <p class="card-text">Monitor staff check-in and check-out records.</p>
+                    <a th:href="@{/admin/staff-attendance}" class="btn btn-warning">View Attendance</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this to your dashboard cards row -->
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100 animate-fade-in-up" style="animation-delay: 700ms;">
+            <div class="card-body text-center">
+                <i class="fas fa-chart-line fa-3x text-info mb-3"></i>
+                <h5 class="card-title">Analytics Dashboard</h5>
+                <p class="card-text">View detailed usage patterns and statistics.</p>
+                <a th:href="@{/admin/analytics}" class="btn btn-info">View Analytics</a>
+            </div>
+        </div>
     </div>
 </div>
 </body>

@@ -1,0 +1,197 @@
+/* Automation Dashboard Styles */
+.automation-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.automation-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.automation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.automation-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary-light);
+    margin: 0;
+}
+
+.automation-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.automation-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary-light);
+    margin-bottom: 0.25rem;
+}
+
+.detail-value {
+    font-weight: 500;
+    color: var(--text-primary-light);
+}
+
+.automation-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+/* Schedule indicator */
+.schedule-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    background: rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 20px;
+    font-size: 0.875rem;
+    color: var(--primary-accent);
+}
+
+/* Toggle switch */
+.automation-toggle {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.automation-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.automation-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #6B7280;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.automation-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .automation-slider {
+    background-color: #10B981;
+}
+
+input:checked + .automation-slider:before {
+    transform: translateX(26px);
+}
+
+/* Quick actions grid */
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.quick-action-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quick-action-card:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1));
+}
+
+.quick-action-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.quick-action-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary-light);
+}
+
+.quick-action-desc {
+    color: var(--text-secondary-light);
+    font-size: 0.875rem;
+}
+
+/* Status indicators */
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.status-active { background-color: #10B981; }
+.status-paused { background-color: #F59E0B; }
+.status-error { background-color: #EF4444; }
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .automation-details {
+        grid-template-columns: 1fr;
+    }
+
+    .automation-actions {
+        justify-content: flex-start;
+    }
+
+    .automation-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout :: layout(~{::content})}">
+<head>
+    <title>Usage Patterns</title>
+    <link rel="stylesheet" th:href="@{/css/analytics.css}">
+</head>
+<body>
+<div th:fragment="content">
+    <div class="content-header">
+        <h1>Library Usage Patterns</h1>
+        <div class="header-actions">
+            <a th:href="@{/admin/analytics}" class="btn btn-secondary">Back to Analytics</a>
+            <button class="btn btn-success" onclick="exportUsageReport()">
+                <i class="fas fa-download me-1"></i>Export Report
+            </button>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Time Period</label>
+                    <select class="form-select" id="timePeriod" onchange="loadUsageData()">
+                        <option value="LAST_7_DAYS">Last 7 Days</option>
+                        <option value="LAST_30_DAYS" selected>Last 30 Days</option>
+                        <option value="LAST_QUARTER">Last Quarter</option>
+                        <option value="LAST_YEAR">Last Year</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">User Type</label>
+                    <select class="form-select" id="userType" onchange="loadUsageData()">
+                        <option value="ALL">All Users</option>
+                        <option value="STUDENT">Students</option>
+                        <option value="FACULTY">Faculty</option>
+                        <option value="STAFF">Staff</option>
+                        <option value="PUBLIC">Public</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Activity Type</label>
+                    <select class="form-select" id="activityType" onchange="loadUsageData()">
+                        <option value="ALL">All Activities</option>
+                        <option value="BORROW">Book Borrowing</option>
+                        <option value="RETURN">Book Returns</option>
+                        <option value="RESERVATION">Reservations</option>
+                        <option value="VISIT">Library Visits</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Group By</label>
+                    <select class="form-select" id="groupBy" onchange="loadUsageData()">
+                        <option value="DAILY">Daily</option>
+                        <option value="WEEKLY">Weekly</option>
+                        <option value="MONTHLY">Monthly</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Usage Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-value" th:text="${usageStats.totalActivities}">0</div>
+                <div class="metric-label">Total Activities</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-value" th:text="${usageStats.uniqueUsers}">0</div>
+                <div class="metric-label">Unique Users</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-value" th:text="${usageStats.avgDailyUsage}">0</div>
+                <div class="metric-label">Avg Daily Usage</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-value" th:text="${usageStats.peakHour}">0</div>
+                <div class="metric-label">Peak Usage Hour</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Usage Trends Over Time</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="usageTrendChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Activity Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="activityDistributionChart" width="200" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Peak Hours -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="mb-0">Peak Usage Hours</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="peakHoursChart" width="400" height="150"></canvas>
+        </div>
+    </div>
+
+    <!-- User Segmentation -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="mb-0">User Activity Segmentation</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>User Segment</th>
+                        <th>Total Activities</th>
+                        <th>Avg Activities/User</th>
+                        <th>Most Active Day</th>
+                        <th>Preferred Time</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="segment : ${userSegments}">
+                        <td th:text="${segment.segmentName}"></td>
+                        <td th:text="${segment.totalActivities}"></td>
+                        <td th:text="${segment.avgActivitiesPerUser}"></td>
+                        <td th:text="${segment.mostActiveDay}"></td>
+                        <td th:text="${segment.preferredTime}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/analytics.js}"></script>
+<script>
+    function loadUsageData() {
+        const filters = {
+            timePeriod: document.getElementById('timePeriod').value,
+            userType: document.getElementById('userType').value,
+            activityType: document.getElementById('activityType').value,
+            groupBy: document.getElementById('groupBy').value
+        };
+
+        // In real implementation, fetch data from server and update charts
+        console.log('Loading usage data with filters:', filters);
+    }
+
+    function exportUsageReport() {
+        const filters = {
+            timePeriod: document.getElementById('timePeriod').value,
+            userType: document.getElementById('userType').value,
+            activityType: document.getElementById('activityType').value
+        };
+
+        const exportType = confirm('Export as PDF? Click OK for PDF, Cancel for CSV');
+        const queryParams = new URLSearchParams(filters).toString();
+
+        if (exportType) {
+            window.location.href = `/admin/reports/usage-patterns/PDF?${queryParams}`;
+        } else {
+            window.location.href = `/admin/reports/usage-patterns/CSV?${queryParams}`;
+        }
+    }
+</script>
+</body>
+</html>

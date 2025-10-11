@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout :: layout(~{::content})}">
+<head>
+    <title>Popular Books Report</title>
+    <link rel="stylesheet" th:href="@{/css/analytics.css}">
+</head>
+<body>
+<div th:fragment="content">
+    <div class="content-header">
+        <h1>Popular Books Analysis</h1>
+        <div class="header-actions">
+            <a th:href="@{/admin/reports}" class="btn btn-secondary">Back to Reports</a>
+            <div class="btn-group">
+                <button class="btn btn-success" onclick="exportReport('PDF')">
+                    <i class="fas fa-file-pdf me-1"></i>PDF
+                </button>
+                <button class="btn btn-info" onclick="exportReport('CSV')">
+                    <i class="fas fa-file-csv me-1"></i>CSV
+                </button>
+                <button class="btn btn-warning" onclick="emailReport()">
+                    <i class="fas fa-envelope me-1"></i>Email
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Time Period</label>
+                    <select class="form-select" id="timePeriod" onchange="loadPopularBooks()">
+                        <option value="LAST_7_DAYS">Last 7 Days</option>
+                        <option value="LAST_30_DAYS" selected>Last 30 Days</option>
+                        <option value="LAST_QUARTER">Last Quarter</option>
+                        <option value="LAST_YEAR">Last Year</option>
+                        <option value="ALL_TIME">All Time</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Category</label>
+                    <select class="form-select" id="category" onchange="loadPopularBooks()">
+                        <option value="ALL">All Categories</option>
+                        <option th:each="category : ${categories}"
+                                th:value="${category.id}"
+                                th:text="${category.name}"></option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Top N Results</label>
+                    <input type="number" class="form-control" id="topN" value="10" min="5" max="50" onchange="loadPopularBooks()">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Minimum Borrows</label>
+                    <input type="number" class="form-control" id="minBorrows" value="1" min="0" onchange="loadPopularBooks()">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-value" th:text="${stats.totalBorrows}">0</div>
+                <div class="metric-label">Total Borrows</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-value" th:text="${stats.uniqueBooks}">0</div>
+                <div class="metric-label">Unique Books</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-value" th:text="${stats.avgBorrowsPerBook}">0</div>
+                <div class="metric-label">Avg Borrows/Book</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-value" th:text="${stats.mostPopularBook}">-</div>
+                <div class="metric-label">Most Popular Book</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popular Books Table -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Most Popular Books</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Book Title</th>
+                        <th>Author</th>
+                        <th>ISBN</th>
+                        <th>Category</th>
+                        <th>Total Borrows</th>
+                        <th>Current Availability</th>
+                        <th>Trend</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="book, iter : ${popularBooks}">
+                        <td th:text="${iter.count}"></td>
+                        <td>
+                            <strong th:text="${book.title}"></strong>
+                        </td>
+                        <td th:text="${book.author}"></td>
+                        <td th:text="${book.isbn}"></td>
+                        <td>
+                            <span class="badge bg-secondary" th:text="${book.category}"></span>
+                        </td>
+                        <td>
+                            <strong th:text="${book.borrowCount}"></strong>
+                        </td>
+                        <td>
+                            <span th:if="${book.available}" class="badge bg-success">Available</span>
+                            <span th:unless="${book.available}" class="badge bg-warning">Borrowed</span>
+                            <small class="text-muted d-block" th:text="'Qty: ' + ${book.quantity}"></small>
+                        </td>
+                        <td>
+                                <span th:if="${book.trend == 'UP'}" class="text-success">
+                                    <i class="fas fa-arrow-up"></i> Increasing
+                                </span>
+                            <span th:if="${book.trend == 'DOWN'}" class="text-danger">
+                                    <i class="fas fa-arrow-down"></i> Decreasing
+                                </span>
+                            <span th:if="${book.trend == 'STABLE'}" class="text-muted">
+                                    <i class="fas fa-minus"></i> Stable
+                                </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Top 10 Books by Borrow Count</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="popularBooksChart" width="400" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Popular Categories</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="categoriesChart" width="400" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/reports.js}"></script>
+<script>
+    function loadPopularBooks() {
+        const filters = {
+            timePeriod: document.getElementById('timePeriod').value,
+            category: document.getElementById('category').value,
+            topN: document.getElementById('topN').value,
+            minBorrows: document.getElementById('minBorrows').value
+        };
+
+        // In real implementation, fetch data from server
+        console.log('Loading popular books with filters:', filters);
+    }
+
+    function exportReport(format) {
+        const filters = {
+            timePeriod: document.getElementById('timePeriod').value,
+            category: document.getElementById('category').value,
+            topN: document.getElementById('topN').value,
+            minBorrows: document.getElementById('minBorrows').value
+        };
+
+        const queryString = new URLSearchParams(filters).toString();
+        window.location.href = `/admin/reports/popular-books/${format}?${queryString}`;
+    }
+
+    function emailReport() {
+        const recipient = prompt('Enter recipient email:');
+        if (recipient) {
+            const filters = {
+                timePeriod: document.getElementById('timePeriod').value,
+                category: document.getElementById('category').value,
+                topN: document.getElementById('topN').value,
+                recipient: recipient
+            };
+
+            // Send email request
+            fetch('/admin/reports/popular-books/email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(filters)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Report sent successfully to ' + recipient);
+                    } else {
+                        alert('Failed to send report: ' + data.message);
+                    }
+                });
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+/* Analytics Dashboard Styles */
+.metric-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary-light);
+}
+
+.metric-label {
+    color: var(--text-secondary-light);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.metric-change {
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.trend-up { color: #10B981; }
+.trend-down { color: #EF4444; }
+.trend-neutral { color: #6B7280; }
+
+/* Chart Containers */
+canvas {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+/* Analytics Table Styles */
+.analytics-table th {
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    color: var(--text-primary-light);
+    font-weight: 600;
+}
+
+.analytics-table td {
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary-light);
+}
+
+/* Filter Controls */
+.analytics-filter {
+    background: linear-gradient(124deg, rgba(229, 229, 229, 0.1) -6.89%, rgba(217, 217, 217, 0.00) 115.76%);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+/* Header Actions */
+.header-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+/* Comparison Bars */
+.comparison-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+}
+
+.comparison-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--primary-accent), #06B6D4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .metric-card {
+        padding: 1rem;
+    }
+
+    .metric-value {
+        font-size: 2rem;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .header-actions .btn {
+        width: 100%;
+    }
+}

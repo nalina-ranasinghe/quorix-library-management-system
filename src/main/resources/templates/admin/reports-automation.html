@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout :: layout(~{::content})}">
+<head>
+    <title>Automated Reports</title>
+    <link rel="stylesheet" th:href="@{/css/automation.css}">
+</head>
+<body>
+<div th:fragment="content">
+    <div class="content-header">
+        <h1>Automated Reports Configuration</h1>
+        <a th:href="@{/admin/reports}" class="btn btn-secondary">Back to Reports</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Scheduled Reports</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Report Name</th>
+                                <th>Schedule</th>
+                                <th>Recipient</th>
+                                <th>Format</th>
+                                <th>Status</th>
+                                <th>Last Sent</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="config : ${automatedReports}">
+                                <td th:text="${config.reportName}"></td>
+                                <td>
+                                    <span class="badge bg-info" th:text="${config.schedule}"></span>
+                                </td>
+                                <td th:text="${config.recipientEmail}"></td>
+                                <td th:text="${config.format}"></td>
+                                <td>
+                                    <span th:if="${config.enabled}" class="badge bg-success">Active</span>
+                                    <span th:unless="${config.enabled}" class="badge bg-secondary">Inactive</span>
+                                </td>
+                                <td th:text="${config.lastSent ? #temporals.format(config.lastSent, 'yyyy-MM-dd HH:mm') : 'Never'}"></td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-outline-primary"
+                                                th:onclick="'editAutomation(\'' + ${config.id} + '\')'">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button th:if="${config.enabled}" class="btn btn-outline-warning"
+                                                th:onclick="'toggleAutomation(\'' + ${config.id} + '\', false)'">
+                                            <i class="fas fa-pause"></i>
+                                        </button>
+                                        <button th:unless="${config.enabled}" class="btn btn-outline-success"
+                                                th:onclick="'toggleAutomation(\'' + ${config.id} + '\', true)'">
+                                            <i class="fas fa-play"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger"
+                                                th:onclick="'deleteAutomation(\'' + ${config.id} + '\')'">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(automatedReports)}">
+                                <td colspan="7" class="text-center">No automated reports configured</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Add New Automated Report</h5>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/admin/reports/automation/save}" method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Report Type</label>
+                            <select name="reportType" class="form-select" required>
+                                <option value="USAGE_PATTERN">Usage Pattern Analysis</option>
+                                <option value="POPULAR_BOOKS">Popular Books Report</option>
+                                <option value="RETURN_TIMELINESS">Return Timeliness Report</option>
+                                <option value="BOOK_AVAILABILITY">Book Availability Report</option>
+                                <option value="STAFF_ATTENDANCE">Staff Attendance Summary</option>
+                                <option value="MEMBERSHIP_GROWTH">Membership Growth Report</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Schedule Frequency</label>
+                            <select name="schedule" class="form-select" required>
+                                <option value="DAILY">Daily</option>
+                                <option value="WEEKLY">Weekly (Monday)</option>
+                                <option value="MONTHLY">Monthly (1st)</option>
+                                <option value="QUARTERLY">Quarterly</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Recipient Email</label>
+                            <input type="email" name="recipientEmail" class="form-control"
+                                   placeholder="assistant.manager@library.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Report Format</label>
+                            <select name="format" class="form-select" required>
+                                <option value="PDF">PDF</option>
+                                <option value="CSV">CSV</option>
+                                <option value="BOTH">Both PDF & CSV</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Time Range</label>
+                            <select name="timeRange" class="form-select" required>
+                                <option value="LAST_7_DAYS">Last 7 Days</option>
+                                <option value="LAST_30_DAYS">Last 30 Days</option>
+                                <option value="LAST_QUARTER">Last Quarter</option>
+                                <option value="LAST_YEAR">Last Year</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" name="enabled" class="form-check-input" checked>
+                            <label class="form-check-label">Enable immediately</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Save Automation</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-primary w-100 mb-2" onclick="runReportNow('USAGE_PATTERN')">
+                                <i class="fas fa-play me-2"></i>Run Usage Report Now
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-success w-100 mb-2" onclick="runReportNow('POPULAR_BOOKS')">
+                                <i class="fas fa-play me-2"></i>Run Popular Books Now
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-info w-100 mb-2" onclick="runReportNow('STAFF_ATTENDANCE')">
+                                <i class="fas fa-play me-2"></i>Run Attendance Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/automation.js}"></script>
+</body>
+</html>

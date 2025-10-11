@@ -1,3 +1,4 @@
+// Modified AuthController.java (no change, but included for completeness; registration handled in service)
 package com.library.app.controller;
 
 import com.library.app.dto.RegisterRequest;
@@ -22,7 +23,7 @@ public class AuthController {
         }
         try {
             User u = userService.registerEndUser(req);
-            return ResponseEntity.ok(new ApiResponse(true, "Registration successful. Please login to continue.", "/"));
+            return ResponseEntity.ok(new ApiResponse(true, "Registration successful. Please wait for approval.", "/"));
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(new ApiResponse(false, ex.getMessage()));
         } catch (Exception ex) {

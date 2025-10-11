@@ -1,9 +1,13 @@
+// Modified AdminController.java (added approveUser, viewAttendance, reports/log, reports/export)
 package com.library.app.controller;
 
 import com.library.app.entity.User;
-import com.library.app.service.UserService;
 import com.library.app.service.ReportService;
+import com.library.app.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +31,31 @@ public class AdminController {
     public String showReports(Model model) {
         model.addAttribute("reportData", reportService.generateAdminDashboardReport());
         return "admin/reports";
+    }
+
+    // NEW: View report logs
+    @GetMapping("/reports/log")
+    public String viewReportLogs(Model model) {
+        model.addAttribute("reports", reportService.getAllReports());
+        return "admin/reports-log";
+    }
+
+    // NEW: Export report
+    @GetMapping("/reports/export/{type}/{format}")
+    public ResponseEntity<byte[]> exportReport(@PathVariable String type, @PathVariable String format) {
+        byte[] bytes = reportService.generateAndExportReport(type, format, 1); // Assume admin user ID 1 for example
+        String filename = type + "." + format.toLowerCase();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+                .contentType(format.equalsIgnoreCase("PDF") ? MediaType.APPLICATION_PDF : MediaType.TEXT_PLAIN)
+                .body(bytes);
+    }
+
+    // NEW: View staff attendance
+    @GetMapping("/staff-attendance")
+    public String viewAttendance(Model model) {
+        model.addAttribute("attendance", reportService.getStaffAttendance());
+        return "admin/staff-attendance";
     }
 
     // == USER MANAGEMENT ==
@@ -80,6 +109,14 @@ public class AdminController {
                 return "redirect:/admin/users/edit/" + user.getUserId();
             }
         }
+    }
+
+    // NEW: Approve user membership
+    @GetMapping("/users/approve/{id}")
+    public String approveUser(@PathVariable("id") int id, RedirectAttributes ra) {
+        userService.approveUser(id);
+        ra.addFlashAttribute("successMessage", "User approved successfully!");
+        return "redirect:/admin/users";
     }
 
     // Delete a user permanently

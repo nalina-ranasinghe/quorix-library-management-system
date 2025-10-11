@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{admin/layout :: layout(~{::content})}">
+
+<head>
+    <!-- Add this line -->
+    <link rel="stylesheet" th:href="@{/css/members.css}">
+</head>
 <head>
     <title>Manage Users</title>
 </head>
