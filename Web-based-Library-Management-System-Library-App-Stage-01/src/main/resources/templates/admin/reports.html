@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout :: layout(~{::content})}">
+<head>
+    <title>Library Reports</title>
+</head>
+<body>
+<div th:fragment="content">
+    <div class="content-header">
+        <h1>Library Reports</h1>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="fas fa-book-reader fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Borrows (Last 30 Days)</h5>
+                    <p class="card-text fs-1 fw-bold" th:text="${reportData.totalBorrowingsLast30Days}"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="fas fa-user-plus fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">New Users (Last 30 Days)</h5>
+                    <p class="card-text fs-1 fw-bold" th:text="${reportData.newUsersLast30Days}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Top 5 Most Borrowed Books</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Total Borrows</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="book, iterStat : ${reportData.mostBorrowedBooks}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${book.title}"></td>
+                    <td th:text="${book.author}"></td>
+                    <td class="fw-bold" th:text="${book.borrowCount}"></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(reportData.mostBorrowedBooks)}">
+                    <td colspan="4" class="text-center">No borrowing data available yet.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
