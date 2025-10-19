@@ -48,14 +48,22 @@ public class BookRepository {
         return jdbcTemplate.query(sql, bookRowMapper);
     }
 
-    /**
-     * Searches for books where the title contains the given keyword (case-insensitive).
-     * @param keyword The search term.
-     * @return A list of matching books.
-     */
-    public List<Book> searchByTitleContaining(String keyword) {
-        String sql = "SELECT * FROM Books WHERE LOWER(title) LIKE LOWER(?) ORDER BY title";
-        // The '%' symbols are wildcards for the LIKE search
-        return jdbcTemplate.query(sql, new Object[]{"%" + keyword + "%"}, bookRowMapper);
+    public void update(Book book) {
+        String sql = "UPDATE Books SET title = ?, author = ?, isbn = ?, category = ?, location = ?, quantity = ?, status = ?, updated_at = GETDATE() WHERE book_id = ?";
+        jdbcTemplate.update(sql,
+                book.getTitle(),
+                book.getAuthor(),
+                book.getIsbn(),
+                book.getCategory(),
+                book.getLocation(),
+                book.getQuantity(),
+                book.getStatus(),
+                book.getBookId());
+    }
+
+    public List<Book> searchByKeyword(String keyword) {
+        String sql = "SELECT * FROM Books WHERE LOWER(title) LIKE LOWER(?) OR LOWER(author) LIKE LOWER(?) OR LOWER(category) LIKE LOWER(?) ORDER BY title";
+        String searchTerm = "%" + keyword + "%";
+        return jdbcTemplate.query(sql, new Object[]{searchTerm, searchTerm, searchTerm}, bookRowMapper);
     }
 }

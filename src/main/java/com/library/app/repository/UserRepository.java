@@ -147,13 +147,16 @@ public class UserRepository {
     }
 
     public int deleteById(int id) {
+        // Step 1: Delete from the join table first to satisfy foreign key constraints
         String deleteRolesSql = "DELETE FROM UserRoles WHERE user_id = ?";
         jdbcTemplate.update(deleteRolesSql, id);
 
+        // Step 2: Delete the user from the main table
         String deleteUserSql = "DELETE FROM Users WHERE user_id = ?";
         return jdbcTemplate.update(deleteUserSql, id);
     }
 
+    // Method to count new users in the last 30 days
     public int countNewUsersLast30Days() {
         String sql = "SELECT COUNT(*) FROM Users WHERE created_at >= DATEADD(day, -30, GETDATE())";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class);

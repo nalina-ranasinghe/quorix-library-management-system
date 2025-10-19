@@ -4,12 +4,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const userDropdown = document.getElementById('userDropdown');
 
     if (userIcon) {
-        userIcon.addEventListener('click', () => {
+        userIcon.addEventListener('click', (e) => {
+            // FIX: Add this line to stop the click from closing the menu immediately.
+            e.stopPropagation();
             userDropdown.classList.toggle('show');
         });
 
         // Close dropdown if clicking outside
         window.addEventListener('click', (e) => {
+            // This part correctly closes the menu if you click outside of it.
+            // No changes were needed here.
             if (!userIcon.contains(e.target) && !userDropdown.contains(e.target)) {
                 userDropdown.classList.remove('show');
             }
@@ -24,66 +28,78 @@ document.addEventListener('DOMContentLoaded', function () {
         aboutLink.addEventListener('click', (e) => {
             e.preventDefault();
             footerSection.scrollIntoView({ behavior: 'smooth' });
-            userDropdown.classList.remove('show'); // Hide dropdown after click
+            if (userDropdown) userDropdown.classList.remove('show');
         });
     }
 
     // --- 3. Live Search Logic ---
     const searchInput = document.getElementById('searchInput');
-    const bookGrid = document.getElementById('bookGrid');
-    const initialBooksHtml = bookGrid.innerHTML; // Store initial state
-
     if (searchInput) {
+        const bookGrid = document.getElementById('bookGrid');
+        const initialBooksHtml = bookGrid.innerHTML;
+        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const csrfParameterName = document.querySelector('meta[name="_csrf_parameter_name"]').getAttribute('content');
+
         searchInput.addEventListener('input', debounce(handleSearch, 300));
-    }
 
-    async function handleSearch(event) {
-        const keyword = event.target.value;
-
-        if (keyword.trim() === '') {
-            bookGrid.innerHTML = initialBooksHtml; // Restore initial list if search is empty
-            return;
+        async function handleSearch(event) {
+            const keyword = event.target.value.trim();
+            if (keyword.length === 0) {
+                bookGrid.innerHTML = initialBooksHtml;
+                return;
+            }
+            try {
+                const response = await fetch(`/api/books/search?keyword=${encodeURIComponent(keyword)}`);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const books = await response.json();
+                displayBooks(books);
+            } catch (error) {
+                console.error('Search error:', error);
+                bookGrid.innerHTML = `<p class="text-center text-white">Could not perform search.</p>`;
+            }
         }
 
-        try {
-            const response = await fetch(`/api/books/search?keyword=${encodeURIComponent(keyword)}`);
-            if (!response.ok) throw new Error('Network response was not ok');
-
-            const books = await response.json();
-            renderBooks(books);
-        } catch (error) {
-            console.error('Search failed:', error);
-            bookGrid.innerHTML = `<p class="text-danger">Failed to load search results.</p>`;
-        }
-    }
-
-    function renderBooks(books) {
-        bookGrid.innerHTML = ''; // Clear current books
-        if (books.length === 0) {
-            bookGrid.innerHTML = `<p class="text-center w-100">No books found matching your search.</p>`;
-            return;
-        }
-
-        books.forEach(book => {
-            const bookCardHtml = `
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="book-card">
-                        <img src="/images/books/${book.isbn}.jpg"
-                             onerror="this.onerror=null; this.src='/images/books/placeholder.jpg';"
-                             class="card-img-top book-card-img" alt="Book Cover">
-                        <div class="card-body">
-                            <h5 class="card-title">${book.title}</h5>
-                            <p class="card-text text-secondary-light">${book.author}</p>
-                        </div>
-                        <div class="card-footer d-flex justify-content-between align-items-center bg-transparent border-top-0 pt-0">
-                            <span class="badge bg-success">${book.quantity} Available</span>
-                            <button class="btn btn-primary btn-sm">Reserve</button>
+        function displayBooks(books) {
+            bookGrid.innerHTML = '';
+            if (books.length === 0) {
+                bookGrid.innerHTML = `<p class="text-center text-white-50">No books found.</p>`;
+                return;
+            }
+            books.forEach(book => {
+                const availabilityBadge = book.quantity > 0
+                    ? `<span class="badge bg-success">${book.quantity} Available</span>`
+                    : `<span class="badge bg-danger">Out of Stock</span>`;
+                const actionButton = book.quantity > 0
+                    ? `<form action="/reserve" method="post" class="d-inline">
+                           <input type="hidden" name="bookId" value="${book.bookId}">
+                           <input type="hidden" name="${csrfParameterName}" value="${csrfToken}">
+                           <button type="submit" class="btn btn-primary btn-sm">Reserve</button>
+                       </form>`
+                    : `<form action="/waitlist" method="post" class="d-inline">
+                           <input type="hidden" name="bookId" value="${book.bookId}">
+                           <input type="hidden" name="${csrfParameterName}" value="${csrfToken}">
+                           <button type="submit" class="btn btn-warning btn-sm">Join Waitlist</button>
+                       </form>`;
+                const bookCardHtml = `
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="book-card">
+                            <img src="/images/books/${book.isbn}.jpg"
+                                 onerror="this.onerror=null; this.src='/images/books/placeholder.jpg';"
+                                 class="card-img-top book-card-img" alt="Book Cover">
+                            <div class="card-body">
+                                <h5 class="card-title">${book.title}</h5>
+                                <p class="card-text text-secondary-light">${book.author}</p>
+                            </div>
+                            <div class="card-footer d-flex justify-content-between align-items-center bg-transparent border-top-0 pt-0">
+                                ${availabilityBadge}
+                                ${actionButton}
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
-            bookGrid.insertAdjacentHTML('beforeend', bookCardHtml);
-        });
+                `;
+                bookGrid.insertAdjacentHTML('beforeend', bookCardHtml);
+            });
+        }
     }
 
     // Debounce function to limit how often the search function is called

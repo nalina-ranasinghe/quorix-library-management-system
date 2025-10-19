@@ -1,5 +1,7 @@
 package com.library.app.service;
 
+import com.library.app.dto.AdminReportDto;
+import com.library.app.dto.MostBorrowedBookDto; // <-- IMPORT the new DTO
 import com.library.app.dto.*;
 import com.library.app.repository.BorrowingRepository;
 import com.library.app.repository.ReportRepository;

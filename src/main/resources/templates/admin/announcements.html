@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout :: layout(~{::content})}">
+<head>
+    <title>Send Announcements</title>
+</head>
+<body>
+<div th:fragment="content">
+    <div class="content-header">
+        <h1 data-typing-effect="Send Announcements" class="animate-fade-in-up"></h1>
+    </div>
+
+    <div th:if="${successMessage}" class="alert alert-success animate-fade-in-up" style="animation-delay: 200ms;">
+        <i class="fas fa-check-circle me-2"></i>
+        <span th:text="${successMessage}"></span>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger animate-fade-in-up" style="animation-delay: 200ms;">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+    <div class="card animate-fade-in-up" style="animation-delay: 300ms;">
+        <div class="card-body">
+            <h5 class="card-title">New Announcement</h5>
+            <p class="card-text">This message will be sent to all active users as an in-app notification.</p>
+
+            <form th:action="@{/admin/announcements/create}" method="post">
+                <div class="mb-3">
+                    <label for="announcementTitle" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="announcementTitle" name="title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="announcementMessage" class="form-label">Message</label>
+                    <textarea class="form-control" id="announcementMessage" name="message" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane me-2"></i>Send to All Users
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

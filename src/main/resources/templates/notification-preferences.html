@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Notification Preferences | Quorix Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+<header th:replace="~{home :: header}"></header>
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h2 class="mb-4">Notification Preferences</h2>
+            <div class="card bg-dark text-white">
+                <div class="card-body p-4">
+                    <form th:action="@{/notifications/preferences}" method="post" th:object="${preferences}">
+                        <div class="form-check form-switch fs-5">
+                            <input class="form-check-input" type="checkbox" th:field="*{receiveEmailNotifications}" id="receiveEmailNotifications">
+                            <label class="form-check-label" for="receiveEmailNotifications">
+                                <strong>Receive Email Notifications</strong>
+                                <p class="small">Get alerts delivered to your primary email address.</p>
+                            </label>
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">Save Preferences</button>
+                            <a th:href="@{/notifications}" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div th:replace="~{home :: footer}"></div>
+</body>
+</html>

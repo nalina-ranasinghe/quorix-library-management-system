@@ -28,8 +28,7 @@ SecurityConfig {
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
                         .requestMatchers("/home", "/forgot-password", "/reset-password").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        // THE ONLY CHANGE IS ON THE NEXT LINE
-                        .requestMatchers("/admin/**").permitAll() // Allows access without login
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
@@ -48,7 +47,6 @@ SecurityConfig {
 
         return http.build();
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

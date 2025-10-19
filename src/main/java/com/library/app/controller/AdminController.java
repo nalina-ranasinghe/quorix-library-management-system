@@ -4,6 +4,7 @@ import com.library.app.entity.User;
 import com.library.app.service.ReportLogService;
 import com.library.app.service.ReportService;
 import com.library.app.service.UserService;
+import com.library.app.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,10 +27,6 @@ public class AdminController {
         return "admin/dashboard";
     }
 
-    /**
-     * Handles the main operational reports page.
-     * This page displays everything EXCEPT the usage patterns.
-     */
     @GetMapping("/reports")
     public String showReports(Model model, Principal principal) {
         // Data for the summary cards at the top
@@ -58,12 +55,14 @@ public class AdminController {
     // == ALL OTHER USER MANAGEMENT METHODS ARE PRESERVED ==
     // ===============================================
 
+    // Display list of users
     @GetMapping("/users")
     public String listUsers(Model model) {
         model.addAttribute("users", userService.findAllUsers());
         return "admin/users-list";
     }
 
+    // Show form to add a new user
     @GetMapping("/users/add")
     public String showAddUserForm(Model model) {
         model.addAttribute("user", new User());
@@ -71,6 +70,7 @@ public class AdminController {
         return "admin/user-form";
     }
 
+    // Show form to edit an existing user
     @GetMapping("/users/edit/{id}")
     public String showEditUserForm(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
         return userService.findUserById(id)
@@ -85,6 +85,7 @@ public class AdminController {
                 });
     }
 
+    // Process the add/edit user form
     @PostMapping("/users/save")
     public String saveUser(@ModelAttribute("user") User user, RedirectAttributes ra) {
         try {
@@ -102,6 +103,7 @@ public class AdminController {
         }
     }
 
+    // Delete a user permanently
     @GetMapping("/users/delete/{id}")
     public String deleteUser(@PathVariable("id") int id, RedirectAttributes ra) {
         userService.deleteUser(id);
@@ -109,6 +111,7 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
+    // Method for viewing user details
     @GetMapping("/users/view/{id}")
     public String viewUser(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
         return userService.findUserById(id)

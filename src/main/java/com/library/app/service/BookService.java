@@ -27,6 +27,6 @@ public class BookService {
      * @return A list of books matching the keyword.
      */
     public List<Book> searchBooks(String keyword) {
-        return bookRepository.searchByTitleContaining(keyword);
+        return bookRepository.searchByKeyword(keyword);
     }
 }

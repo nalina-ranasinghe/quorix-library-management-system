@@ -42,9 +42,6 @@ public class UserService {
         u.setPhone(req.getPhone().trim());
         u.setPasswordHash(passwordEncoder.encode(req.getPassword()));
         u.setRole("END_USER");
-
-        // --- THIS IS THE CRITICAL CHANGE ---
-        // New users are now set to PENDING for admin approval
         u.setStatus("PENDING");
 
         User savedUser = userRepo.save(u);
@@ -101,6 +98,7 @@ public class UserService {
         boolean isNewUser = user.getUserId() == null || user.getUserId() == 0;
 
         if (isNewUser) {
+            // ADDED: Check for duplicates before saving a NEW user
             if (userRepo.existsByUsernameIgnoreCase(user.getUsername())) {
                 throw new IllegalArgumentException("Username '" + user.getUsername() + "' already exists.");
             }
@@ -113,6 +111,7 @@ public class UserService {
             Role role = roleRepo.findByRoleName(user.getRole()).orElseThrow();
             userRepo.linkUserToRole(savedUser.getUserId(), role.getRoleId());
         } else {
+            // Logic for updating an existing user
             User existingUser = userRepo.findById(user.getUserId()).orElseThrow();
             if (user.getPasswordHash() != null && !user.getPasswordHash().isEmpty()) {
                 existingUser.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
@@ -157,23 +156,28 @@ public class UserService {
 
     @Transactional
     public void updateUserDetails(String currentUsername, String newFullName, String newEmail, String newPhone, String newPassword) {
+        // Find the user by their current username
         User user = userRepo.findByUsernameIgnoreCase(currentUsername)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
+        // Check if the new email is already taken by another user
         userRepo.findByEmailIgnoreCase(newEmail).ifPresent(existingUser -> {
             if (!existingUser.getUserId().equals(user.getUserId())) {
                 throw new IllegalArgumentException("Email '" + newEmail + "' is already in use by another account.");
             }
         });
 
+        // Update the personal details
         user.setFullName(newFullName);
         user.setEmail(newEmail);
         user.setPhone(newPhone);
 
+        // Only update the password if a new one was actually entered
         if (newPassword != null && !newPassword.isEmpty()) {
             user.setPasswordHash(passwordEncoder.encode(newPassword));
         }
 
+        // Save the changes to the database
         userRepo.update(user);
     }
 }

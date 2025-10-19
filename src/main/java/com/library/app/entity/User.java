@@ -20,6 +20,5 @@ public class User {
     private String status = "ACTIVE";
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    // This will be populated manually by our service
     private Set<String> roles;
 }

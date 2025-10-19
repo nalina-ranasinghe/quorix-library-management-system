@@ -36,7 +36,6 @@ public class ViewController {
             userService.findUserByUsername(principal.getName())
                     .ifPresent(user -> model.addAttribute("currentUser", user));
         }
-
         return "home";
     }
 
