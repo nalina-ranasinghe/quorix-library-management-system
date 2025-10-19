@@ -35,10 +35,15 @@
                 </a>
             </li>
 
-
             <li class="nav-item">
                 <a th:href="@{/admin/users/pending}" th:classappend="${requestURI == '/admin/users/pending' ? 'active' : ''}">
                     <i class="fas fa-user-check nav-icon"></i> Pending Approvals
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a th:href="@{/admin/announcements}" th:classappend="${#strings.startsWith(requestURI, '/admin/announcements') ? 'active' : ''}">
+                    <i class="fas fa-bullhorn nav-icon"></i> Announcements
                 </a>
             </li>
 
