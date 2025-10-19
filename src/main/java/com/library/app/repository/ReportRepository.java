@@ -146,7 +146,10 @@ public class ReportRepository {
             u.role AS staff_role,
             sa.check_in_time,
             sa.check_out_time,
-            sa.status
+            CASE
+                WHEN sa.check_out_time IS NULL THEN 'Checked-In'
+                ELSE 'Checked-Out'
+            END AS status
         FROM StaffAttendance sa
         JOIN Users u ON sa.user_id = u.user_id
         WHERE CONVERT(date, sa.check_in_time) = CONVERT(date, GETDATE())
