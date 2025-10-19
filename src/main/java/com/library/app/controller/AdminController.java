@@ -1,13 +1,16 @@
 package com.library.app.controller;
 
 import com.library.app.entity.User;
-import com.library.app.service.UserService;
+import com.library.app.service.ReportLogService;
 import com.library.app.service.ReportService;
+import com.library.app.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/admin")
@@ -16,29 +19,51 @@ public class AdminController {
 
     private final UserService userService;
     private final ReportService reportService;
+    private final ReportLogService reportLogService;
 
-    // Main admin dashboard
     @GetMapping
     public String adminDashboard() {
-        return "admin/dashboard"; // We will create this new dashboard page
+        return "admin/dashboard";
     }
 
+    /**
+     * Handles the main operational reports page.
+     * This page displays everything EXCEPT the usage patterns.
+     */
     @GetMapping("/reports")
-    public String showReports(Model model) {
-        model.addAttribute("reportData", reportService.generateAdminDashboardReport());
+    public String showReports(Model model, Principal principal) {
+        // Data for the summary cards at the top
+        model.addAttribute("reportData", reportService.generateAdminDashboardReport(principal));
+
+        // Data for the main report tables (Overdue, Availability, Attendance)
+        model.addAttribute("operationalReportData", reportService.generateOperationalReport(principal));
+
+        // Data for the report generation log table
+        model.addAttribute("reportLogs", reportLogService.getRecentLogs());
+
         return "admin/reports";
     }
 
-    // == USER MANAGEMENT ==
+    /**
+     * Handles the new, separate dashboard for Usage Patterns.
+     */
+    @GetMapping("/reports/usage")
+    public String showUsageReport(Model model, Principal principal) {
+        // Fetches only the data for popular books and top users
+        model.addAttribute("usageReportData", reportService.generateUsagePatternReport(principal));
+        return "admin/usage-report"; // Renders the new, dedicated usage report page
+    }
 
-    // Display list of users
+    // ===============================================
+    // == ALL OTHER USER MANAGEMENT METHODS ARE PRESERVED ==
+    // ===============================================
+
     @GetMapping("/users")
     public String listUsers(Model model) {
         model.addAttribute("users", userService.findAllUsers());
         return "admin/users-list";
     }
 
-    // Show form to add a new user
     @GetMapping("/users/add")
     public String showAddUserForm(Model model) {
         model.addAttribute("user", new User());
@@ -46,7 +71,6 @@ public class AdminController {
         return "admin/user-form";
     }
 
-    // Show form to edit an existing user
     @GetMapping("/users/edit/{id}")
     public String showEditUserForm(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
         return userService.findUserById(id)
@@ -61,19 +85,15 @@ public class AdminController {
                 });
     }
 
-    // Process the add/edit user form
     @PostMapping("/users/save")
-    public String saveUser(User user, RedirectAttributes ra) {
+    public String saveUser(@ModelAttribute("user") User user, RedirectAttributes ra) {
         try {
             userService.saveUserByAdmin(user);
             ra.addFlashAttribute("successMessage", "User saved successfully!");
             return "redirect:/admin/users";
-        } catch (IllegalArgumentException e) {
-            // If an error is thrown (like a duplicate username), handle it here
+        } catch (Exception e) {
             ra.addFlashAttribute("errorMessage", e.getMessage());
-            ra.addFlashAttribute("user", user); // Send the user's data back to the form
-
-            // Redirect back to the correct form (add or edit)
+            ra.addFlashAttribute("user", user);
             if (user.getUserId() == null || user.getUserId() == 0) {
                 return "redirect:/admin/users/add";
             } else {
@@ -82,7 +102,6 @@ public class AdminController {
         }
     }
 
-    // Delete a user permanently
     @GetMapping("/users/delete/{id}")
     public String deleteUser(@PathVariable("id") int id, RedirectAttributes ra) {
         userService.deleteUser(id);
@@ -90,17 +109,43 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    // Method for viewing user details
     @GetMapping("/users/view/{id}")
     public String viewUser(@PathVariable("id") int id, Model model, RedirectAttributes ra) {
         return userService.findUserById(id)
                 .map(user -> {
                     model.addAttribute("user", user);
-                    return "admin/user-details"; // Path to the new details HTML page
+                    return "admin/user-details";
                 })
                 .orElseGet(() -> {
                     ra.addFlashAttribute("errorMessage", "User not found with ID: " + id);
                     return "redirect:/admin/users";
                 });
+    }
+    @GetMapping("/users/pending")
+    public String showPendingUsers(Model model) {
+        model.addAttribute("pendingUsers", userService.findPendingUsers());
+        return "admin/pending-users"; // This is a new HTML file we will create
+    }
+    @PostMapping("/users/approve/{id}")
+    public String approveUser(@PathVariable("id") int id, RedirectAttributes ra) {
+        userService.approveUser(id);
+        ra.addFlashAttribute("successMessage", "User has been approved and is now active.");
+        return "redirect:/admin/users/pending";
+    }
+    @PostMapping("/users/reject/{id}")
+    public String rejectUser(@PathVariable("id") int id, RedirectAttributes ra) {
+        userService.rejectUser(id);
+        ra.addFlashAttribute("successMessage", "User has been rejected and removed.");
+        return "redirect:/admin/users/pending";
+    }
+    @PostMapping("/reports/send")
+    public String sendReportEmail(@RequestParam("recipientEmail") String email, RedirectAttributes ra) {
+        try {
+            reportService.sendOperationalReportByEmail(email);
+            ra.addFlashAttribute("successMessage", "Report has been sent successfully to " + email);
+        } catch (Exception e) {
+            ra.addFlashAttribute("errorMessage", "Failed to send report. Please check the system logs.");
+        }
+        return "redirect:/admin/reports";
     }
 }

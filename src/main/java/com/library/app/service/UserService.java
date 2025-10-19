@@ -42,7 +42,10 @@ public class UserService {
         u.setPhone(req.getPhone().trim());
         u.setPasswordHash(passwordEncoder.encode(req.getPassword()));
         u.setRole("END_USER");
-        u.setStatus("ACTIVE");
+
+        // --- THIS IS THE CRITICAL CHANGE ---
+        // New users are now set to PENDING for admin approval
+        u.setStatus("PENDING");
 
         User savedUser = userRepo.save(u);
         userRepo.linkUserToRole(savedUser.getUserId(), endUserRole.getRoleId());
@@ -50,7 +53,40 @@ public class UserService {
         return savedUser;
     }
 
-    // === ADMIN CRUD METHODS ===
+    // ===============================================
+    // == NEW METHODS FOR MEMBERSHIP APPROVAL ==
+    // ===============================================
+
+    /**
+     * Finds all users with a 'PENDING' status.
+     * @return A list of users awaiting approval.
+     */
+    public List<User> findPendingUsers() {
+        return userRepo.findByStatus("PENDING");
+    }
+
+    /**
+     * Approves a user by changing their status to 'ACTIVE'.
+     * @param userId The ID of the user to approve.
+     */
+    @Transactional
+    public void approveUser(int userId) {
+        userRepo.updateStatus(userId, "ACTIVE");
+    }
+
+    /**
+     * Rejects a user by calling the existing deleteUser method.
+     * @param userId The ID of the user to reject.
+     */
+    @Transactional
+    public void rejectUser(int userId) {
+        // This reuses your existing delete logic, which is good practice
+        this.deleteUser(userId);
+    }
+
+    // ===============================================
+    // == YOUR EXISTING METHODS ARE PRESERVED BELOW ==
+    // ===============================================
 
     public List<User> findAllUsers() {
         return userRepo.findAll();
@@ -65,7 +101,6 @@ public class UserService {
         boolean isNewUser = user.getUserId() == null || user.getUserId() == 0;
 
         if (isNewUser) {
-            // ADDED: Check for duplicates before saving a NEW user
             if (userRepo.existsByUsernameIgnoreCase(user.getUsername())) {
                 throw new IllegalArgumentException("Username '" + user.getUsername() + "' already exists.");
             }
@@ -78,7 +113,6 @@ public class UserService {
             Role role = roleRepo.findByRoleName(user.getRole()).orElseThrow();
             userRepo.linkUserToRole(savedUser.getUserId(), role.getRoleId());
         } else {
-            // Logic for updating an existing user (remains the same)
             User existingUser = userRepo.findById(user.getUserId()).orElseThrow();
             if (user.getPasswordHash() != null && !user.getPasswordHash().isEmpty()) {
                 existingUser.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
@@ -123,28 +157,23 @@ public class UserService {
 
     @Transactional
     public void updateUserDetails(String currentUsername, String newFullName, String newEmail, String newPhone, String newPassword) {
-        // Find the user by their current username (which is reliable)
         User user = userRepo.findByUsernameIgnoreCase(currentUsername)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        // Check if the new email is already taken by another user
         userRepo.findByEmailIgnoreCase(newEmail).ifPresent(existingUser -> {
             if (!existingUser.getUserId().equals(user.getUserId())) {
                 throw new IllegalArgumentException("Email '" + newEmail + "' is already in use by another account.");
             }
         });
 
-        // Update the personal details
         user.setFullName(newFullName);
         user.setEmail(newEmail);
         user.setPhone(newPhone);
 
-        // Only update the password if a new one was actually entered
         if (newPassword != null && !newPassword.isEmpty()) {
             user.setPasswordHash(passwordEncoder.encode(newPassword));
         }
 
-        // Save the changes to the database
         userRepo.update(user);
     }
 }

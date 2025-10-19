@@ -14,6 +14,7 @@
     <div class="alert alert-success animate-fade-in-up" style="animation-delay: 200ms;">
         Welcome back, Administrator!
     </div>
+
     <div class="row">
         <div class="col-md-6 col-lg-4 mb-4">
             <div class="card h-100 animate-fade-in-up" style="animation-delay: 300ms;">
@@ -25,18 +26,47 @@
                 </div>
             </div>
         </div>
+
         <div class="col-md-6 col-lg-4 mb-4">
             <div class="card h-100 animate-fade-in-up" style="animation-delay: 400ms;">
                 <div class="card-body text-center">
-                    <i class="fas fa-chart-pie fa-3x text-success mb-3"></i>
-                    <h5 class="card-title">Library Reports</h5>
-                    <p class="card-text">View key statistics and popular books.</p>
-                    <a th:href="@{/admin/reports}" class="btn btn-success">View Reports</a>
+                    <i class="fas fa-chart-line fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">Operational Reports</h5>
+                    <p class="card-text">View overdue books, availability, and attendance.</p>
+                    <a th:href="@{/admin/reports}" class="btn btn-info text-white">View Reports</a>
                 </div>
             </div>
         </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 animate-fade-in-up" style="animation-delay: 500ms;">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-pie fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Usage Patterns</h5>
+                    <p class="card-text">Analyze popular books and top library users.</p>
+                    <a th:href="@{/admin/reports/usage}" class="btn btn-success">Analyze Usage</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 animate-fade-in-up" style="animation-delay: 600ms;">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-check fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Pending Approvals</h5>
+                    <p class="card-text">Approve or reject new membership requests.</p>
+                    <a th:href="@{/admin/users/pending}" class="btn btn-warning position-relative">
+                        Review Requests
+                        <span th:if="${pendingUserCount > 0}"
+                              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                              th:text="${pendingUserCount}">
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 </body>
-
 </html>

@@ -35,6 +35,31 @@ public class UserRepository {
             new HashSet<>() // Roles will be loaded separately
     );
 
+    // ===============================================
+    // == NEW METHODS FOR MEMBERSHIP APPROVAL ==
+    // ===============================================
+
+    /**
+     * Finds all users with a specific status (e.g., 'PENDING').
+     */
+    public List<User> findByStatus(String status) {
+        String sql = "SELECT * FROM Users WHERE status = ?";
+        return jdbcTemplate.query(sql, new Object[]{status}, userRowMapper);
+    }
+
+    /**
+     * Updates the status of a specific user.
+     */
+    public int updateStatus(int userId, String newStatus) {
+        String sql = "UPDATE Users SET status = ? WHERE user_id = ?";
+        return jdbcTemplate.update(sql, newStatus, userId);
+    }
+
+
+    // ===============================================
+    // == YOUR EXISTING METHODS ARE PRESERVED BELOW ==
+    // ===============================================
+
     public List<User> findAll() {
         String sql = "SELECT * FROM Users";
         return jdbcTemplate.query(sql, userRowMapper);
@@ -122,16 +147,13 @@ public class UserRepository {
     }
 
     public int deleteById(int id) {
-        // Step 1: Delete from the join table first to satisfy foreign key constraints
         String deleteRolesSql = "DELETE FROM UserRoles WHERE user_id = ?";
         jdbcTemplate.update(deleteRolesSql, id);
 
-        // Step 2: Delete the user from the main table
         String deleteUserSql = "DELETE FROM Users WHERE user_id = ?";
         return jdbcTemplate.update(deleteUserSql, id);
     }
 
-    // Method to count new users in the last 30 days
     public int countNewUsersLast30Days() {
         String sql = "SELECT COUNT(*) FROM Users WHERE created_at >= DATEADD(day, -30, GETDATE())";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class);

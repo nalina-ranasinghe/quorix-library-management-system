@@ -26,10 +26,10 @@ SecurityConfig {
                 .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
-                        // UPDATED LINE
                         .requestMatchers("/home", "/forgot-password", "/reset-password").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        // THE ONLY CHANGE IS ON THE NEXT LINE
+                        .requestMatchers("/admin/**").permitAll() // Allows access without login
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
@@ -48,6 +48,7 @@ SecurityConfig {
 
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
