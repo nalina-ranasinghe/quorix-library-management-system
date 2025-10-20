@@ -10,34 +10,45 @@
 </head>
 
 <body>
-    <!-- Sidebar Navigation -->
-    <nav class="sidebar">
-        <a href="#" class="sidebar-brand">
-            <img th:src="@{/css/images/quorix-logo.png}" alt="Quorix" class="sidebar-logo"/>
-        </a>
-        <ul class="sidebar-nav">
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/staff/library-management}">
-                    <i class="fas fa-book-reader"></i>Library Management
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/staff/books}">
-                    <i class="fas fa-table-list"></i>Book Catalog
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/staff/books/new}">
-                    <i class="fas fa-plus"></i>Add Book
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/staff/books/missing}">
-                    <i class="fas fa-triangle-exclamation"></i>Missing Books
-                </a>
-            </li>
-        </ul>
-    </nav>
+<!-- Sidebar Navigation -->
+<nav class="sidebar">
+    <div class="sidebar-header">
+        <img th:src="@{/images/quorix-logo.png}" alt="Logo" class="sidebar-logo">
+    </div>
+    <ul class="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/staff/library-management}"
+               th:classappend="${#strings.startsWith(requestURI, '/staff/library-management') ? 'active' : ''}">
+                <i class="fas fa-book-reader nav-icon"></i>  Library Management
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/staff/books}"
+               th:classappend="${#strings.startsWith(requestURI, '/staff/books') and not #strings.contains(requestURI, '/new') and not #strings.contains(requestURI, '/missing') ? 'active' : ''}">
+                <i class="fas fa-table-list nav-icon"></i>  Book Catalog
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/staff/books/new}"
+               th:classappend="${#strings.contains(requestURI, '/staff/books/new') ? 'active' : ''}">
+                <i class="fas fa-plus nav-icon"></i>  Add Book
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/staff/books/missing}"
+               th:classappend="${#strings.contains(requestURI, '/staff/books/missing') ? 'active' : ''}">
+                <i class="fas fa-triangle-exclamation nav-icon"></i>  Missing Books
+            </a>
+        </li>
+    </ul>
+    <div class="sidebar-footer">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-outline-light w-100">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </form>
+    </div>
+</nav>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -159,7 +170,7 @@
         // Update date and time
         function updateDateTime() {
             const now = new Date();
-            document.getElementById('currentDateTime').textContent = 
+            document.getElementById('currentDateTime').textContent =
                 now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
         }
 
@@ -167,7 +178,7 @@
         function validateISBNInput(input) {
             // Remove any non-numeric characters
             input.value = input.value.replace(/[^0-9]/g, '');
-            
+
             // Limit to 13 digits maximum
             if (input.value.length > 13) {
                 input.value = input.value.substring(0, 13);
@@ -178,14 +189,14 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateDateTime();
             setInterval(updateDateTime, 1000);
-            
+
             // Add event listener to ISBN input
             const isbnInput = document.getElementById('isbn');
             if (isbnInput) {
                 isbnInput.addEventListener('input', function() {
                     validateISBNInput(this);
                 });
-                
+
                 // Prevent paste of non-numeric content
                 isbnInput.addEventListener('paste', function(e) {
                     e.preventDefault();

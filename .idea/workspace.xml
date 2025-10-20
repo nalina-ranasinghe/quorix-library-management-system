@@ -4,16 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1cf1a74-40fa-4a2d-9e8c-b460b99feb70" name="Changes" comment="System Merge">
+    <list default="true" id="c1cf1a74-40fa-4a2d-9e8c-b460b99feb70" name="Changes" comment="Fixed endpoints/mapping errors in Staff module">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/library/app/controller/BookController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/library/app/controller/BookController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/library/app/controller/LibraryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/library/app/controller/LibraryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src-main/java/com/library/app/controller/LibraryController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/library/app/config/EmailConfigForNotifications.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/library/app/config/EmailConfigForNotifications.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/dashboard.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/add-book-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/add-book-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin/layout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/books.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/books.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/edit-book-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/edit-book-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/layout.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/library-management.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/library-management.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/library/app/controller/BookController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/library/app/controller/BookController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/library/app/controller/LibraryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/library/app/controller/LibraryController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/missing-books.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/missing-books.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/search-results.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/search-results.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/css/dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/css/dashboard.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/add-book-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/add-book-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/admin/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/admin/layout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/books.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/books.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/edit-book-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/edit-book-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/layout.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/templates/library-management.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/library-management.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/missing-books.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/missing-books.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/search-results.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/search-results.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,38 +70,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.AppApplication.executor": "Run",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "Admin+User+Staff",
-    "ignore.virus.scanning.warn.message": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "G:/LibraryApp",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "MavenSettings",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AppApplication.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Admin+User+Staff&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;G:/LibraryApp&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "sqlserver"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlserver&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="G:\LibraryApp\LMS\src\main\java\com\library\app" />
@@ -133,7 +145,7 @@
       <workItem from="1760932970282" duration="552000" />
       <workItem from="1760933554028" duration="3274000" />
       <workItem from="1760937906139" duration="4657000" />
-      <workItem from="1760943617208" duration="2890000" />
+      <workItem from="1760943617208" duration="15788000" />
     </task>
     <task id="LOCAL-00001" summary="End-User System Completed">
       <option name="closed" value="true" />
@@ -167,7 +179,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760942553514</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Fixed endpoints/mapping errors in Staff module">
+      <option name="closed" value="true" />
+      <created>1760946713227</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1760946713227</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -179,6 +199,7 @@
     <MESSAGE value="Added &quot;Announcements&quot; logic to the sidebar and changed the color of its components." />
     <MESSAGE value="Completed Staff Dashboard - UI enhancements are needed!" />
     <MESSAGE value="System Merge" />
-    <option name="LAST_COMMIT_MESSAGE" value="System Merge" />
+    <MESSAGE value="Fixed endpoints/mapping errors in Staff module" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed endpoints/mapping errors in Staff module" />
   </component>
 </project>
