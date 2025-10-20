@@ -16,21 +16,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/staff")
+@RequestMapping("/staff/books")
 public class BookController {
 
     @Autowired
     private BookService bookService;
 
     // READ: Display the list of all books
-    @GetMapping("/staff/books")
+    @GetMapping("")
     public String viewBookCatalog(Model model) {
         model.addAttribute("listBooks", bookService.getAllBooks());
         return "books"; // Returns books.html
     }
 
     // CREATE: Show the form to add a new book
-    @GetMapping("/staff/books/new")
+    @GetMapping("/new")
     public String showNewBookForm(Model model) {
         Book book = new Book();
         model.addAttribute("book", book);
@@ -38,7 +38,7 @@ public class BookController {
     }
 
     // CREATE: Save the new book to the database
-    @PostMapping("/staff/books/save")
+    @PostMapping("/save")
     public String saveBook(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model) {
 
         // --- Custom check for duplicate ISBN ---
@@ -59,16 +59,16 @@ public class BookController {
             if (result.hasFieldErrors("author")) {
                 errorMessage += "Author is required. ";
             }
-            return "redirect:/staff/books/new?error=" + java.net.URLEncoder.encode(errorMessage, java.nio.charset.StandardCharsets.UTF_8);
+            return "redirect:/books/new?error=" + java.net.URLEncoder.encode(errorMessage, java.nio.charset.StandardCharsets.UTF_8);
         }
 
         // If there are no errors, save the book and redirect
         bookService.saveBook(book);
-        return "redirect:/staff/books";
+        return "redirect:/books";
     }
 
     // UPDATE: Show the form to edit an existing book
-    @GetMapping("/staff/books/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String showEditBookForm(@PathVariable(value = "id") Long id, Model model) {
         Book book = bookService.getBookById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + id));
@@ -77,7 +77,7 @@ public class BookController {
     }
 
     // UPDATE: Save the changes to the book
-    @PostMapping("/staff/books/update/{id}")
+    @PostMapping("/update/{id}")
     public String updateBook(@PathVariable("id") long id,
                              @Valid @ModelAttribute("book") Book book,
                              BindingResult result,
@@ -102,27 +102,27 @@ public class BookController {
 
         book.setId(id); // Ensure the correct ID is set for updating
         bookService.saveBook(book);
-        return "redirect:/staff/books";
+        return "redirect:/books";
     }
 
     // DELETE: Delete a book
-    @GetMapping("/staff/books/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteBook(@PathVariable(value = "id") Long id, Model model) {
         String result = bookService.deleteBook(id);
         
         if (result.startsWith("Book deleted successfully")) {
-            return "redirect:/staff/books";
+            return "redirect:/books";
         } else {
             // Add error message and redirect back to books page
             model.addAttribute("errorMessage", result);
-            return "redirect:/staff/books?error=" + java.net.URLEncoder.encode(result, java.nio.charset.StandardCharsets.UTF_8);
+            return "redirect:/books?error=" + java.net.URLEncoder.encode(result, java.nio.charset.StandardCharsets.UTF_8);
         }
     }
 
     /**
      * Handles the search request and displays the results.
      */
-    @GetMapping("/staff/books/search")
+    @GetMapping("/search")
     public String searchBooks(@RequestParam("keyword") String keyword, Model model) {
         model.addAttribute("listBooks", bookService.searchBooks(keyword));
         model.addAttribute("keyword", keyword);
@@ -132,13 +132,11 @@ public class BookController {
     /**
      * Displays a report of all books marked as "Missing".
      */
-    @GetMapping("/staff/books/missing")
+    @GetMapping("/missing")
     public String viewMissingBooks(Model model) {
         model.addAttribute("listBooks", bookService.getMissingBooks());
         return "missing-books"; // Returns a new HTML page: missing-books.html
     }
-
-
 
 }
 

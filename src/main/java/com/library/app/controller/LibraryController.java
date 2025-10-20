@@ -12,19 +12,26 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/staff")
 public class LibraryController {
 
     @Autowired
     private BorrowService borrowService;
 
+    @GetMapping("")
+    public String staffDashboard() {
+        return "redirect:/staff/library-management";
+    }
+
+
     // Test page for static resources
-    @GetMapping("/staff/test")
+    @GetMapping("/test")
     public String test() {
         return "test";
     }
 
     // Library Management System page
-    @GetMapping("/staff/library-management")
+    @GetMapping("/library-management")
     public String libraryManagement(Model model) {
         // Load available books for the UI
         List<Book> availableBooks = borrowService.getAvailableBooks();

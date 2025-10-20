@@ -208,7 +208,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // API Base URL
-    const API_BASE = '/api';
+    const API_BASE = '/staff/api';
 
     // Show alert function
     function showAlert(message, type = 'success') {
@@ -236,7 +236,7 @@
     // Load available books
     async function loadAvailableBooks() {
         try {
-            const response = await fetch('/api/available-books');
+            const response = await fetch('/staff/api/available-books');
             const books = await response.json();
 
             const container = document.getElementById('availableBooksList');
@@ -283,7 +283,7 @@
     // Load user borrowings
     async function loadUserBorrowings(userId) {
         try {
-            const response = await fetch(`/api/user-borrowings/${userId}`);
+            const response = await fetch(`/staff/api/user-borrowings/${userId}`);
             const borrowings = await response.json();
 
             const container = document.getElementById('userBorrowingsList');
@@ -360,7 +360,7 @@
         const days = document.getElementById('borrowDays').value;
 
         try {
-            const response = await fetch('/api/borrow-book', {
+            const response = await fetch('/staff/api/borrow-book', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -412,7 +412,7 @@
     // Individual action functions
     async function returnBook(borrowingId) {
         try {
-            const response = await fetch(`/api/return-book/${borrowingId}`, {
+            const response = await fetch(`/staff/api/return-book/${borrowingId}`, {
                 method: 'POST'
             });
 
@@ -439,7 +439,7 @@
         }
 
         try {
-            const response = await fetch(`/api/renew-book/${borrowingId}?additionalDays=${additionalDays}`, {
+            const response = await fetch(`/staff/api/renew-book/${borrowingId}?additionalDays=${additionalDays}`, {
                 method: 'POST'
             });
 
