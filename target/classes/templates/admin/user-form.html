@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout :: layout(~{::content})}">
+
+<body>
+<div th:fragment="content">
+    <div class="content-header">
+        <h1 th:text="${pageTitle}"></h1>
+        <a th:href="@{/admin/users}" class="btn btn-secondary">Back to List</a>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <form th:action="@{/admin/users/save}" th:object="${user}" method="post">
+                <input type="hidden" th:field="*{userId}" />
+                <div class="mb-3"><label class="form-label">Username</label><input type="text" th:field="*{username}" class="form-control" required/></div>
+                <div class="mb-3"><label class="form-label">Full Name</label><input type="text" th:field="*{fullName}" class="form-control" required/></div>
+                <div class="mb-3"><label class="form-label">Email</label><input type="email" th:field="*{email}" class="form-control" required/></div>
+                <div class="mb-3"><label class="form-label">Phone</label><input type="tel" th:field="*{phone}" class="form-control" required/></div>
+                <div class="mb-3"><label class="form-label">Password</label><input type="password" th:field="*{passwordHash}" class="form-control" th:placeholder="${user.userId != null} ? 'Leave blank to keep current password' : ''"/></div>
+                <div class="mb-3"><label class="form-label">Role</label><select th:field="*{role}" class="form-select" required><option value="ADMIN">ADMIN</option><option value="STAFF">STAFF</option><option value="END_USER">END_USER</option></select></div>
+                <div class="mb-3"><label class="form-label">Status</label><select th:field="*{status}" class="form-select" required><option value="ACTIVE">ACTIVE</option><option value="INACTIVE">INACTIVE</option></select></div>
+                <button type="submit" class="btn btn-primary">Save User</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

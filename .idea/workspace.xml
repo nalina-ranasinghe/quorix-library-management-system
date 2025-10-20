@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c1cf1a74-40fa-4a2d-9e8c-b460b99feb70" name="Changes" comment="System Merge">
+      <change afterPath="$PROJECT_DIR$/.idea/LibraryApp.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.agent.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.edit.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/2c0f5714-2bf1-414a-a354-ea2d03b22477.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/2c0f5714-2bf1-414a-a354-ea2d03b22477/storage_v2/_src_/database/LibraryDB.WQrkpw.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/2c0f5714-2bf1-414a-a354-ea2d03b22477/storage_v2/_src_/database/LibraryDB.WQrkpw/schema/INFORMATION_SCHEMA.NBgcMw.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/2c0f5714-2bf1-414a-a354-ea2d03b22477/storage_v2/_src_/database/LibraryDB.WQrkpw/schema/sys.zb4BAA.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/library/app/controller/BookController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/library/app/controller/LibraryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/library/app/service/BorrowService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/library/app/service/DatabaseService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/images/library-background.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/css/images/quorix-logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/add-book-form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/books.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/edit-book-form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/layout.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/library-management.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/missing-books.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/search-results.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/test.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/library/app/AppApplication.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/library/app/controller/BookController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/library/app/controller/LibraryController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/library/app/entity/Book.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/library/app/entity/Borrowing.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/library/app/entity/User.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/library/app/repository/BookRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/library/app/service/BookService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/library/app/service/BorrowService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/library/app/service/DatabaseService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/dashboard.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/home.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/images/library-background.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/images/quorix-logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/css/login.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9780062457714.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9780140280197.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9780345472328.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9780374533557.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9780735211292.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9780743269513.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9780804137386.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9780812981605.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9780857197689.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9781328683786.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9781443456623.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9781455586691.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9781501111112.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9781501124020.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9781589795471.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9781612680194.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9781774922228.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9781885167774.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9781936891023.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/9781982134488.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/books/placeholder.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/library-background.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/library-hallway.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/quorix-logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/images/user-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/auth.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/dashboard.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/static/js/home.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/add-book-form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/admin.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/admin/announcements.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/admin/dashboard.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/admin/layout.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/admin/pending-users.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/admin/reports.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/admin/usage-report.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/admin/user-details.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/admin/user-form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/admin/users-list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/books.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/edit-book-form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/emails/operational-report.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/forgot-password.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/home.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/layout.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/library-management.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/missing-books.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/my-books.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/notification-preferences.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/notifications.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/reset-password.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/search-results.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/settings.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/test.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/templates/useraccountsettings.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/library/app/AppApplicationTests.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/library/app/AppApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/library/app/AppApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/library/app/entity/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/library/app/entity/Book.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/library/app/entity/Borrowing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/library/app/entity/Borrowing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/library/app/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/library/app/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/library/app/repository/BookRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/library/app/repository/BookRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/library/app/service/BookService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/library/app/service/BookService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/staff.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/library/app/AppApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/library/app/AppApplicationTests.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Staff-stage-02" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;IT24101529&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/IT24101529/Web-based-Library-Management-System.git&quot;,
+    &quot;accountId&quot;: &quot;825b1dec-afd2-4626-989a-ae6b4fd53340&quot;
+  }
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="34HdFlkdtNOFGHy83baBKqFlSts" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.AppApplication.executor": "Debug",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "Merging Admin+User+Staff",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "G:/LibraryApp",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "MavenSettings",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlserver"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\LibraryApp\LMS\src\main\java\com\library\app" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.AppApplication">
+    <configuration name="AppApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="LMS" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.library.app.lms.AppApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AppApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="LibraryApp" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.library.app.AppApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.23892.409" />
+        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-IU-252.23892.409" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c1cf1a74-40fa-4a2d-9e8c-b460b99feb70" name="Changes" comment="" />
+      <created>1760874332703</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1760874332703</updated>
+      <workItem from="1760874337256" duration="2187000" />
+      <workItem from="1760878668457" duration="8261000" />
+      <workItem from="1760932970282" duration="552000" />
+      <workItem from="1760933554028" duration="3274000" />
+      <workItem from="1760937906139" duration="4458000" />
+    </task>
+    <task id="LOCAL-00001" summary="End-User System Completed">
+      <option name="closed" value="true" />
+      <created>1760875529715</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1760875529715</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Admin+User-Systems-Merged">
+      <option name="closed" value="true" />
+      <created>1760882118102</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1760882118102</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added &quot;Announcements&quot; logic to the sidebar and changed the color of its components.">
+      <option name="closed" value="true" />
+      <created>1760884970844</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1760884970844</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="End-User System Completed" />
+    <MESSAGE value="Admin+User-Systems-Merged" />
+    <MESSAGE value="Added &quot;Announcements&quot; logic to the sidebar and changed the color of its components." />
+    <MESSAGE value="Completed Staff Dashboard - UI enhancements are needed!" />
+    <MESSAGE value="System Merge" />
+    <option name="LAST_COMMIT_MESSAGE" value="System Merge" />
+  </component>
+</project>

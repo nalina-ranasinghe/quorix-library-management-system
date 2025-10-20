@@ -1,0 +1,152 @@
+:root {
+    --text-primary-light: #FFFFFF;
+    --text-secondary-light: #E5E7EB;
+    --border-color: rgba(255, 255, 255, 0.2);
+    --primary-accent: #3B82F6; /* Blue */
+    --success-color: #10B981; /* Green */
+    --input-bg: rgba(255, 255, 255, 0.1); /* Slightly visible input background */
+    --input-border-focus: rgba(255, 255, 255, 0.4);
+}
+
+body {
+    background-image: url('../images/library-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: "Poppins", sans-serif;
+    color: var(--text-primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Dark overlay for readability */
+body::before {
+    content: '';
+    position: fixed; /* Use fixed to ensure it covers the entire viewport */
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker for better contrast */
+    z-index: -1; /* Push it behind all content */
+}
+
+.login-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 500px; /* Slightly increased max-width for better spacing */
+}
+
+.login-card {
+    border-radius: 35px;
+    background: linear-gradient(124deg, rgba(229, 229, 229, 0.15) -6.89%, rgba(217, 217, 217, 0.00) 115.76%);
+    box-shadow: 5px 4px 15px 0px rgba(0, 0, 0, 0.40); /* Slightly stronger shadow */
+    backdrop-filter: blur(20px); /* Increased blur */
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    padding: 3rem; /* Increased padding */
+    color: var(--text-primary-light);
+}
+
+.login-logo {
+    width: 250px; /* Increased logo size */
+    margin-bottom: 2rem; /* Adjusted margin */
+}
+
+.nav-tabs {
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1.5rem; /* Added margin */
+}
+
+.nav-tabs .nav-link {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary-light);
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.nav-tabs .nav-link:hover {
+    color: var(--text-primary-light);
+    background-color: rgba(255, 255, 255, 0.05); /* Subtle hover for tabs */
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--text-primary-light);
+    background-color: transparent; /* Ensure active tab background is transparent */
+    border-bottom: 2px solid var(--primary-accent);
+    font-weight: 600; /* Make active tab slightly bolder */
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    background: var(--input-bg); /* Use the slightly visible input background */
+    border: 1px solid var(--border-color);
+    color: var(--text-primary-light);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-control:focus {
+    background: rgba(0, 0, 0, 0.35); /* Slightly darker on focus */
+    border-color: var(--input-border-focus); /* More visible border on focus */
+    box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25); /* Accent glow */
+    color: var(--text-primary-light);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6); /* Slightly more visible placeholder */
+}
+
+.btn-primary {
+    background-color: var(--primary-accent);
+    border-color: var(--primary-accent);
+    font-weight: 600;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease-in-out;
+    color: var(--text-primary-light); /* Ensure button text is white */
+}
+
+.btn-primary:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    border-color: var(--primary-accent); /* Keep border color consistent */
+    background-color: var(--primary-accent); /* Keep background color consistent */
+}
+
+.btn-primary:active,
+.btn-primary:focus {
+    background-color: var(--primary-accent) !important; /* Force active/focus color */
+    border-color: var(--primary-accent) !important;
+    box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25) !important;
+}
+
+.guest-link {
+    color: var(--text-secondary-light);
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.guest-link:hover {
+    color: var(--text-primary-light);
+    text-decoration: underline;
+}
+
+/* Specific styles for alert messages */
+.alert {
+    background-color: rgba(255, 255, 255, 0.15); /* Light transparent background */
+    border: 1px solid var(--border-color);
+    color: var(--text-primary-light);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    border-radius: 0.5rem;
+}
+.alert-danger { border-color: rgba(255, 0, 0, 0.4); }
+.alert-success { border-color: rgba(0, 255, 0, 0.4); }

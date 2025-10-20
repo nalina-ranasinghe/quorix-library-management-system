@@ -10,6 +10,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+    // Getters and Setters
     private Integer userId;
     private String username;
     private String fullName;
@@ -21,4 +22,5 @@ public class User {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Set<String> roles;
+
 }

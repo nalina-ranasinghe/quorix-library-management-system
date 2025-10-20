@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout :: layout(~{::content})}">
+<head>
+    <title>Library Reports</title>
+</head>
+<body>
+<div th:fragment="content">
+    <div class="content-header">
+        <h1 data-typing-effect="Operational Reports" class="animate-fade-in-up"></h1>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6 mb-4 animate-fade-in-up" style="animation-delay: 200ms;"><div class="card text-center h-100"><div class="card-body"><i class="fas fa-book-reader fa-3x text-primary mb-3"></i><h5 class="card-title">Borrows (Last 30 Days)</h5><p class="card-text fs-1 fw-bold" th:text="${reportData.totalBorrowingsLast30Days}"></p></div></div></div>
+        <div class="col-md-6 mb-4 animate-fade-in-up" style="animation-delay: 300ms;"><div class="card text-center h-100"><div class="card-body"><i class="fas fa-user-plus fa-3x text-success mb-3"></i><h5 class="card-title">New Users (Last 30 Days)</h5><p class="card-text fs-1 fw-bold" th:text="${reportData.newUsersLast30Days}"></p></div></div></div>
+    </div>
+
+    <div class="card mt-4 animate-fade-in-up" style="animation-delay: 400ms;">
+        <div class="card-header bg-danger text-white"><h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Overdue Books</h5></div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead><tr><th>Book Title</th><th>Borrower</th><th>Due Date</th><th class="text-center">Days Overdue</th></tr></thead>
+                    <tbody>
+                    <tr th:each="b : ${operationalReportData.overdueBooks}">
+                        <td th:text="${b.bookTitle}"></td>
+                        <td th:text="${b.borrowerName}"></td>
+                        <td th:text="${#temporals.format(b.dueDate, 'dd-MMM-yyyy')}"></td>
+                        <td class="text-center"><span class="badge bg-danger rounded-pill" th:text="${b.daysOverdue} + ' days'"></span></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(operationalReportData.overdueBooks)}">
+                        <td colspan="4" class="text-center">No overdue books.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4 animate-fade-in-up" style="animation-delay: 500ms;">
+        <div class="card-header bg-success text-white"><h5 class="mb-0"><i class="fas fa-book-open me-2"></i>Book Availability</h5></div>
+        <div class="card-body">
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                <table class="table table-hover">
+                    <thead><tr><th>Title</th><th>Author</th><th>Location</th><th class="text-center">Available Copies</th></tr></thead>
+                    <tbody>
+                    <tr th:each="book : ${operationalReportData.availableBooks}">
+                        <td th:text="${book.title}"></td>
+                        <td th:text="${book.author}"></td>
+                        <td th:text="${book.location}"></td>
+                        <td class="text-center"><span class="badge bg-success rounded-pill" th:text="${book.quantity}"></span></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(operationalReportData.availableBooks)}">
+                        <td colspan="4" class="text-center">No books are currently available.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4 animate-fade-in-up" style="animation-delay: 600ms;">
+        <div class="card-header bg-info text-white"><h5 class="mb-0"><i class="fas fa-user-clock me-2"></i>Staff Attendance (Today)</h5></div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead><tr><th>Staff Name</th><th>Role</th><th>Check-In</th><th>Check-Out</th><th class="text-center">Status</th></tr></thead>
+                    <tbody>
+                    <tr th:each="att : ${operationalReportData.todaysAttendance}">
+                        <td th:text="${att.staffName}"></td>
+                        <td th:text="${att.staffRole}"></td>
+                        <td th:text="${#temporals.format(att.checkInTime, 'hh:mm a')}"></td>
+                        <td th:text="${att.checkOutTime != null ? #temporals.format(att.checkOutTime, 'hh:mm a') : '---'}"></td>
+                        <td class="text-center"><span class="badge" th:classappend="${att.status == 'PRESENT' ? 'bg-success' : 'bg-warning'}" th:text="${att.status}"></span></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(operationalReportData.todaysAttendance)}">
+                        <td colspan="5" class="text-center">No staff attendance records for today.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4 animate-fade-in-up" style="animation-delay: 700ms;">
+        <div class="card-header bg-dark text-white"><h5 class="mb-0"><i class="fas fa-history me-2"></i>Report Log</h5></div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead><tr><th>Report Name</th><th>Generated By</th><th>Timestamp</th><th class="text-center">Status</th></tr></thead>
+                    <tbody>
+                    <tr th:each="log : ${reportLogs}">
+                        <td th:text="${log.reportName}"></td>
+                        <td th:text="${log.generatedByUsername}"></td>
+                        <td th:text="${#temporals.format(log.generationTimestamp, 'dd-MMM-yyyy hh:mm a')}"></td>
+                        <td class="text-center"><span class="badge" th:classappend="${log.deliveryStatus == 'SUCCESS' ? 'bg-success' : 'bg-danger'}" th:text="${log.deliveryStatus}"></span></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(reportLogs)}">
+                        <td colspan="4" class="text-center">No report generation activities have been logged.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="content-header">
+        <h1 data-typing-effect="Operational Reports" class="animate-fade-in-up"></h1>
+    </div>
+
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+    <div class="card mb-4 animate-fade-in-up">
+        <div class="card-body">
+            <form th:action="@{/admin/reports/send}" method="post" class="d-flex align-items-center">
+                <input type="email" name="recipientEmail" class="form-control me-2" placeholder="Enter assistant manager's email" required>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane me-2"></i>Send Report
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
