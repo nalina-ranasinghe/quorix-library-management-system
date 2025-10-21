@@ -33,7 +33,7 @@ public class LibraryController {
         return "library-management";
     }
 
-    // --- API Endpoints ---
+    //API Endpoints
 
     @PostMapping("/api/borrow-book")
     @ResponseBody
@@ -109,7 +109,7 @@ public class LibraryController {
         }
     }
 
-    // --- Endpoints for Existing UI ---
+    // Endpoints for Existing UI
 
     @GetMapping("/api/user-borrowings/{userId}")
     @ResponseBody
@@ -139,7 +139,7 @@ public class LibraryController {
         }
     }
 
-    // --- Helper Method for Parsing ---
+    // Helper Method for Parsing
     private Integer parseInteger(Object obj, String fieldName) {
         if (obj == null) {
             throw new IllegalArgumentException("Missing required field: " + fieldName);
