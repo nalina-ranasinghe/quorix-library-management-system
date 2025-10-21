@@ -64,7 +64,7 @@ public class BookController {
 
         // If there are no errors, save the book and redirect
         bookService.saveBook(book);
-        return "redirect:/books";
+        return "redirect:/staff/books";
     }
 
     // UPDATE: Show the form to edit an existing book
@@ -102,7 +102,7 @@ public class BookController {
 
         book.setId(id); // Ensure the correct ID is set for updating
         bookService.saveBook(book);
-        return "redirect:/books";
+        return "redirect:/staff/books";
     }
 
     // DELETE: Delete a book
@@ -111,11 +111,11 @@ public class BookController {
         String result = bookService.deleteBook(id);
         
         if (result.startsWith("Book deleted successfully")) {
-            return "redirect:/books";
+            return "redirect:/staff/books";
         } else {
             // Add error message and redirect back to books page
             model.addAttribute("errorMessage", result);
-            return "redirect:/books?error=" + java.net.URLEncoder.encode(result, java.nio.charset.StandardCharsets.UTF_8);
+            return "redirect:/staff/books?error=" + java.net.URLEncoder.encode(result, java.nio.charset.StandardCharsets.UTF_8);
         }
     }
 
