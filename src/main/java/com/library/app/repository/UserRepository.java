@@ -56,10 +56,6 @@ public class UserRepository {
     }
 
 
-    // ===============================================
-    // == YOUR EXISTING METHODS ARE PRESERVED BELOW ==
-    // ===============================================
-
     public List<User> findAll() {
         String sql = "SELECT * FROM Users";
         return jdbcTemplate.query(sql, userRowMapper);
