@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; }
+        .container { max-width: 800px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 8px; }
+        h1, h2 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        .badge { padding: 5px 10px; border-radius: 12px; color: white; font-weight: bold; }
+        .bg-danger { background-color: #dc3545; }
+        .bg-success { background-color: #28a745; }
+        .bg-info { background-color: #17a2b8; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Library Operational Report</h1>
+    <p>Generated on: <span th:text="${#temporals.format(generationDate, 'dd-MMM-yyyy hh:mm a')}"></span></p>
+
+    <h2>Overdue Books</h2>
+    <table>
+        <thead><tr><th>Book Title</th><th>Borrower</th><th>Days Overdue</th></tr></thead>
+        <tbody>
+        <tr th:each="b : ${reportData.overdueBooks}">
+            <td th:text="${b.bookTitle}"></td>
+            <td th:text="${b.borrowerName}"></td>
+            <td><span class="badge bg-danger" th:text="${b.daysOverdue} + ' days'"></span></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(reportData.overdueBooks)}"><td colspan="3">No overdue books.</td></tr>
+        </tbody>
+    </table>
+
+    <h2>Book Availability</h2>
+    <table>
+        <thead><tr><th>Title</th><th>Author</th><th>Available Copies</th></tr></thead>
+        <tbody>
+        <tr th:each="book : ${reportData.availableBooks}">
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.author}"></td>
+            <td><span class="badge bg-success" th:text="${book.quantity}"></span></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(reportData.availableBooks)}"><td colspan="3">No books are currently available.</td></tr>
+        </tbody>
+    </table>
+
+    <h2>Staff Attendance (Today)</h2>
+    <table>
+        <thead><tr><th>Staff Name</th><th>Status</th><th>Check-In</th><th>Check-Out</th></tr></thead>
+        <tbody>
+        <tr th:each="att : ${reportData.todaysAttendance}">
+            <td th:text="${att.staffName}"></td>
+            <td><span class="badge" th:classappend="${att.status == 'PRESENT' ? 'bg-info' : 'bg-secondary'}" th:text="${att.status}"></span></td>
+            <td th:text="${#temporals.format(att.checkInTime, 'hh:mm a')}"></td>
+            <td th:text="${att.checkOutTime != null ? #temporals.format(att.checkOutTime, 'hh:mm a') : '---'}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(reportData.todaysAttendance)}"><td colspan="4">No staff attendance records for today.</td></tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

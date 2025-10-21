@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layout :: layout(~{::content})}">
+<head>
+    <title>Manage Users</title>
+</head>
+<body>
+<div th:fragment="content">
+    <div class="content-header">
+        <h1>User Management</h1>
+        <a th:href="@{/admin/users/add}" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Add New User</a>
+    </div>
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th><th>Username</th><th>Full Name</th><th>Role</th><th>Status</th><th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.userId}"></td>
+                    <td th:text="${user.username}"></td>
+                    <td th:text="${user.fullName}"></td>
+                    <td><span class="badge bg-info" th:text="${user.role}"></span></td>
+                    <td>
+                        <span th:classappend="${user.status == 'ACTIVE' ? 'bg-success' : 'bg-danger'}" class="badge" th:text="${user.status}"></span>
+                    </td>
+                    <td>
+                        <a th:href="@{/admin/users/view/{id}(id=${user.userId})}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-eye"></i></a>
+                        <a th:href="@{/admin/users/edit/{id}(id=${user.userId})}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+                        <a th:href="@{/admin/users/delete/{id}(id=${user.userId})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure?');"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

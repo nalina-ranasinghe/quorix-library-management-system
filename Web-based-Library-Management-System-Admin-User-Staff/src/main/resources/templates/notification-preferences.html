@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Notification Preferences | Quorix Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+<header th:replace="~{home :: header}"></header>
+
+<main class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0 section-title">Notification Preferences</h2>
+        <div>
+            <a th:href="@{/notifications}" class="btn btn-outline-light me-2">
+                <i class="fas fa-arrow-left me-2"></i>Back to Notifications
+            </a>
+        </div>
+    </div>
+
+    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i><span th:text="${successMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i><span th:text="${errorMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="blur-card">
+        <form th:action="@{/notifications/preferences}" th:object="${preferences}" method="post">
+            <h4 class="section-title">Email Notifications</h4>
+            <p class="text-white-50">Choose which notifications you'd like to receive by email.</p>
+            <div class="form-check form-switch form-check-lg">
+
+                <input class="form-check-input" type="checkbox" role="switch"
+                       id="receiveEmailNotifications"
+                       th:field="*{receiveEmailNotifications}">
+
+                <label class="form-check-label text-white" for="receiveEmailNotifications">
+                    Receive all email notifications (Recommended)
+                </label>
+            </div>
+
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-2"></i>Save Preferences
+            </button>
+        </form>
+    </div>
+</main>
+
+<div th:replace="~{home :: footer}"></div>
+<script th:src="@{/js/home.js}"></script>
+</body>
+</html>

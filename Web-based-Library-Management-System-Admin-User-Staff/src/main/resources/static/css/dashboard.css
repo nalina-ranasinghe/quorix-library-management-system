@@ -1,0 +1,247 @@
+:root {
+    --sidebar-bg-gradient: linear-gradient(160deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    --primary-accent: #3B82F6;
+    --text-primary-light: #FFFFFF;
+    --text-secondary-light: #E5E7EB;
+    --border-color: rgba(255, 255, 255, 0.2);
+    --hover-bg: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    background-image: url('../images/library-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: "Poppins", sans-serif;
+    color: var(--text-primary-light);
+    position: relative; /* Keep this for positioning context */
+    min-height: 100vh; /* Ensure body takes full height */
+    display: flex; /* Required for the wrapper */
+    flex-direction: column;
+}
+
+/* UPDATED: Overlay with explicit z-index */
+body::before {
+    content: '';
+    position: fixed; /* Use fixed to ensure it covers the entire viewport */
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker for better contrast */
+    z-index: -1; /* Push it behind all content */
+}
+
+
+.dashboard-wrapper {
+    display: flex;
+    min-height: 100vh;
+    flex-grow: 1;
+}
+
+.sidebar {
+    width: 260px;
+    background: var(--sidebar-bg-gradient);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid var(--border-color);
+    color: white;
+    position: fixed;
+    height: 100%;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.row > [class^="col-"] > .card {
+    margin-bottom: 1.5rem; /* Equivalent to Bootstrap's mb-4 */
+}
+
+/* Ensure the last card in a column doesn't have extra bottom margin */
+.row > [class^="col-"] > .card:last-child {
+    margin-bottom: 0;
+}
+
+/* Reinforce horizontal gutter spacing between columns */
+.row.g-4 {
+    --bs-gutter-x: 1.5rem; /* Ensure horizontal spacing */
+    --bs-gutter-y: 1.5rem; /* Ensure vertical spacing if rows wrap */
+}
+.row.g-4 > * {
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    margin-top: var(--bs-gutter-y); /* Ensure vertical spacing applies */
+}
+
+/* Make the main content wrapper take up remaining space */
+.main-content-wrapper {
+    display: flex; /* Allows sidebar and content to sit side-by-side */
+    flex-grow: 1; /* Allows this wrapper to take up available vertical space */
+}
+
+/* Ensure the content area itself can grow */
+.main-content {
+    flex-grow: 1; /* Allows content area to push footer down */
+    display: flex;
+    flex-direction: column; /* Stack header/body/footer vertically */
+    /* Keep margin-left if sidebar is fixed */
+    margin-left: 260px;
+    width: calc(100% - 260px); /* Adjust width if sidebar is fixed */
+}
+
+.content-body {
+    flex-grow: 1; /* Allows this inner div to push the footer down */
+}
+
+.footer {
+    width: calc(100% - 260px); /* Match main content width if sidebar is fixed */
+    margin-left: 260px; /* Align with main content if sidebar is fixed */
+    flex-shrink: 0; /* Prevent footer from shrinking */
+    /* Add existing footer styles here if needed */
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-top: 1px solid var(--border-color);
+    color: var(--text-secondary-light);
+    font-size: 0.9rem;
+    padding: 1rem; /* Adjust padding as needed */
+    text-align: center;
+}
+
+/* (The rest of the file remains the same) */
+.sidebar-header{
+    display:flex;
+    align-items:center;
+    padding:0 .5rem 1.5rem .5rem;
+    margin-bottom:1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-logo{
+    width:120px
+}
+
+.sidebar-nav{
+    list-style:none;
+    padding:0;
+    margin:0;
+    flex-grow:1
+}
+
+.nav-item a{
+    display:flex;
+    align-items:center;
+    padding:.875rem 1rem;
+    text-decoration:none;
+    border-radius:.5rem;
+    margin-bottom:.5rem;
+    transition:all .2s ease-in-out;
+    font-weight:500;
+    color: var(--text-secondary-light);
+}
+
+.nav-item a:hover{
+    background-color:var(--hover-bg);
+    color:#fff
+}
+
+.nav-item a.active{
+    background-color:var(--primary-accent);
+    color:#fff;
+    box-shadow:0 4px 12px rgba(59,130,246,.3)
+}
+
+.nav-item a .nav-icon{
+    margin-right:1rem;
+    width:20px;
+    text-align:center
+}
+
+.sidebar-footer{
+    padding:1rem 0;
+    border-top:1px solid var(--border-color)
+}
+
+.content-header{
+    margin-bottom:2rem;
+    display:flex;
+    justify-content:space-between;
+    align-items:center
+}
+
+.content-header h1{
+    font-size:1.75rem;
+    font-weight:700;
+    color:var(--text-primary-light);
+    text-shadow:0 2px 4px rgba(0,0,0,.5)
+}
+
+.card{
+    border-radius:35px;
+    background:linear-gradient(124deg, rgba(229, 229, 229, 0.15) -6.89%, rgba(217, 217, 217, 0.00) 115.76%);
+    box-shadow:5px 4px 4px 0px rgba(0, 0, 0, 0.30);
+    backdrop-filter:blur(15px);
+    -webkit-backdrop-filter:blur(15px);
+    border:1px solid var(--border-color);
+    transition:all .3s ease;color:var(--text-primary-light);
+    overflow:hidden
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    box-shadow:5px 9px 15px 0 rgba(0,0,0,.35)
+}
+
+.card-body, .card-header, .card-footer {
+    background-color: transparent; padding: 2rem;
+}
+
+.card-title {
+    color: var(--text-primary-light);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.card-text {
+    color: var(--text-primary-light);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.alert{
+    background:linear-gradient(124deg, rgba(229, 229, 229, 0.25) -6.89%, rgba(217, 217, 217, 0.05) 115.76%);
+    backdrop-filter:blur(15px);
+    -webkit-backdrop-filter:blur(15px);
+    border:1px solid var(--border-color);
+    border-radius:20px;color:var(--text-primary-light);
+    text-shadow:0 1px 2px rgba(0,0,0,0.4)
+}
+
+.table{
+    background-color:transparent;
+    border:none
+}
+
+.card .table th,.card .table td{
+    background-color:transparent !important;
+    color:var(--text-primary-light) !important;
+    text-shadow:0 1px 3px rgba(0,0,0,0.4);
+    border-top:1px solid rgba(255, 255, 255, 0.2)
+}
+
+.card .table tbody tr:first-child > td{
+    border-top:none
+}
+
+.card .table thead{
+    background-color:rgba(255, 255, 255, 0.1)
+}
+
+.card .table th{
+    border-bottom:2px solid rgba(255, 255, 255, 0.3) !important
+}
+
+.card .table-hover > tbody > tr:hover{
+    background:rgba(229, 229, 229, 0.1)
+}
+
+.animate-fade-in-up{
+    animation:fadeInUp .8s ease-out forwards;
+    opacity:0}@keyframes fadeInUp{from{opacity:0;
+    transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
