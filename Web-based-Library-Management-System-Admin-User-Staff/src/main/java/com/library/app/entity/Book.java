@@ -3,7 +3,7 @@ package com.library.app.entity;
 import lombok.Data;
 import java.time.LocalDateTime;
 
-@Data // Lombok for getters/setters
+@Data
 public class Book {
 
     private Long id;
@@ -12,7 +12,7 @@ public class Book {
     private String title;
     private String author;
 
-    // Keep Bean Validation if desired
+
     @jakarta.validation.constraints.NotBlank(message = "ISBN is required.")
     @jakarta.validation.constraints.Size(min = 10, max = 13, message = "ISBN must be between 10 and 13 digits.")
     @jakarta.validation.constraints.Pattern(regexp = "^[0-9]*$", message = "ISBN must contain only numbers.")

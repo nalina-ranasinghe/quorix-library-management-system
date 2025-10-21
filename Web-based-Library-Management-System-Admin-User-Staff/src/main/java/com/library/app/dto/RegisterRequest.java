@@ -21,7 +21,7 @@ public class RegisterRequest {
     @Email
     private String email;
 
-    // Phone is required (per your note)
+    // Phone is required
     @NotBlank(message = "Phone number is required")
     @Size(min = 7, max = 20)
     private String phone;

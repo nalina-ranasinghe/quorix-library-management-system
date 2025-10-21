@@ -49,7 +49,7 @@ public class WaitlistRepository {
                 "WHERE w.book_id = ? " +
                 "ORDER BY w.waitlisted_at ASC";
 
-        RowMapper<User> userRowMapper = (rs, rowNum) -> { /* Existing mapping logic */ return new User(); };
+        RowMapper<User> userRowMapper = (rs, rowNum) -> { /* mapping logic */ return new User(); };
         return jdbcTemplate.query(sql, new Object[]{bookId}, userRowMapper).stream().findFirst();
     }
 
@@ -58,13 +58,13 @@ public class WaitlistRepository {
         jdbcTemplate.update(sql, userId, bookId);
     }
 
-    // ---: Find a waitlist entry by its primary key ---
+    //  Find a waitlist entry by its primary key
     public Optional<Waitlist> findById(int waitlistId) {
         String sql = "SELECT * FROM Waitlist WHERE waitlist_id = ?";
         return jdbcTemplate.query(sql, new Object[]{waitlistId}, waitlistRowMapper).stream().findFirst();
     }
 
-    // --- NEW METHOD: Get all waitlisted books for a specific user ---
+    //  Get all waitlisted books for a specific user
     public List<UserWaitlistDto> findWaitlistedBooksByUserId(int userId) {
         String sql = "SELECT w.waitlist_id, b.title, b.author, w.waitlisted_at " +
                 "FROM Waitlist w " +
@@ -83,7 +83,7 @@ public class WaitlistRepository {
         return jdbcTemplate.query(sql, new Object[]{userId}, rowMapper);
     }
 
-    // --- : Delete a waitlist entry by its primary key ---
+    //  Delete a waitlist entry by its primary key
     public void deleteById(int waitlistId) {
         String sql = "DELETE FROM Waitlist WHERE waitlist_id = ?";
         jdbcTemplate.update(sql, waitlistId);

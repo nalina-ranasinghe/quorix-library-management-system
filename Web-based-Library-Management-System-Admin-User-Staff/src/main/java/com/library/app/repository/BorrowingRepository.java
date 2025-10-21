@@ -20,7 +20,7 @@ public class BorrowingRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    // == Reporting Methods ==
+    // Reporting Methods
     public List<MostBorrowedBookDto> findMostBorrowedBooks(int limit) {
         String sql = "SELECT TOP (?) b.title, b.author, COUNT(bo.book_id) as borrow_count " +
                 "FROM Borrowings bo " +
@@ -45,7 +45,7 @@ public class BorrowingRepository {
         return count != null ? count : 0;
     }
 
-    // == User-Facing Methods ==
+    //  User-Facing Methods
     public List<UserBorrowingDto> findBorrowingsByUserId(int userId) {
         String sql = "SELECT bo.borrowing_id, b.title, b.author, bo.borrow_date, bo.due_date, bo.status " +
                 "FROM Borrowings bo " +

@@ -90,7 +90,7 @@ public class NotificationController {
         User currentUser = userRepository.findByUsernameIgnoreCase(principal.getName())
                 .orElseThrow(() -> new IllegalStateException("Current user not found"));
 
-        // saves the preference to the in-memory map
+
         notificationService.updateUserPreferences(currentUser.getUserId(), preferences);
 
         ra.addFlashAttribute("successMessage", "Your notification preferences have been saved.");

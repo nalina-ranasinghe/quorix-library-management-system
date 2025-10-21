@@ -22,7 +22,7 @@ public class WaitlistService {
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
 
-    // --- NOTIFICATION INJECTION ---
+    //NOTIFICATION INJECTION
     private final NotificationService notificationService;
 
     /**

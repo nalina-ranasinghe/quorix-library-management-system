@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 
 @Controller
-@RequestMapping("/admin/announcements") // Base URL for this controller
+@RequestMapping("/admin/announcements")
 @RequiredArgsConstructor
 public class AdminNotificationController {
 
@@ -20,8 +20,7 @@ public class AdminNotificationController {
 
 
     /**
-     * Handles the GET request to show the announcements form page.
-     * This is linked from the "Send Alerts" button on the admin dashboard.
+
      * @return The path to the announcements.html template.
      */
     @GetMapping

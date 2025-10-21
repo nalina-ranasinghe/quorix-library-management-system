@@ -41,12 +41,12 @@ public class BookController {
     @PostMapping("/save")
     public String saveBook(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model) {
 
-        // --- Custom check for duplicate ISBN ---
+        //  Custom check for duplicate ISBN
         if (bookService.isbnExists(book.getIsbn())) {
             result.rejectValue("isbn", "isbn.exists", "A book with this ISBN already exists.");
         }
 
-        // --- Check for all validation errors ---
+        //  Check for all validation errors
         if (result.hasErrors()) {
             // If there are errors, redirect back to the form with error message
             String errorMessage = "Please correct the errors below: ";
@@ -83,18 +83,18 @@ public class BookController {
                              BindingResult result,
                              Model model) {
 
-        // --- Custom check for duplicate ISBN on UPDATE ---
+        //  Custom check for duplicate ISBN on UPDATE
         if (bookService.isbnExistsForOtherId(book.getIsbn(), id)) {
             result.rejectValue("isbn", "isbn.exists", "Another book with this ISBN already exists.");
         }
 
-        // --- Check for all validation errors ---
+        //  Check for all validation errors
         if (result.hasErrors()) {
             model.addAttribute("pageTitle", "Update Book Details");
             return "edit-book-form"; // Return to the edit form with error messages
         }
 
-        // --- If no errors, proceed with saving ---
+        //  If no errors, proceed with saving
 
         // We must fetch the original creation date, as it's not submitted from the form
         Book originalBook = bookService.getBookById(id).orElseThrow(() -> new IllegalArgumentException("Invalid book Id:" + id));

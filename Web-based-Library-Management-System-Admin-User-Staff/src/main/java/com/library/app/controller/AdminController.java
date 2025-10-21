@@ -32,7 +32,7 @@ public class AdminController {
         // Data for the summary cards at the top
         model.addAttribute("reportData", reportService.generateAdminDashboardReport(principal));
 
-        // Data for the main report tables (Overdue, Availability, Attendance)
+        // Data for the main report tables Overdue, Availability, Attendance
         model.addAttribute("operationalReportData", reportService.generateOperationalReport(principal));
 
         // Data for the report generation log table
@@ -41,9 +41,7 @@ public class AdminController {
         return "admin/reports";
     }
 
-    /**
-     * Handles the new, separate dashboard for Usage Patterns.
-     */
+
     @GetMapping("/reports/usage")
     public String showUsageReport(Model model, Principal principal) {
         // Fetches only the data for popular books and top users
@@ -51,9 +49,7 @@ public class AdminController {
         return "admin/usage-report"; // Renders the new, dedicated usage report page
     }
 
-    // ===============================================
-    // == ALL OTHER USER MANAGEMENT METHODS ARE PRESERVED ==
-    // ===============================================
+
 
     // Display list of users
     @GetMapping("/users")

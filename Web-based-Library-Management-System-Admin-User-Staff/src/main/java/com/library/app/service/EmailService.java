@@ -39,12 +39,12 @@ public class EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(htmlBody, true); // true indicates the body is HTML
+            helper.setText(htmlBody, true);
 
             mailSender.send(mimeMessage);
 
         } catch (Exception e) {
-            // In a real application, you'd want more robust error handling
+
             throw new RuntimeException("Failed to send email: " + e.getMessage(), e);
         }
     }

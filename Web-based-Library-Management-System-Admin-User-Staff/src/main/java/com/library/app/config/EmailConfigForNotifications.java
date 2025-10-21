@@ -14,7 +14,7 @@ public class EmailConfigForNotifications {
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
-        // Configure these in your application.properties
+
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
         mailSender.setUsername("quorixlibrarynotifications@gmail.com");
@@ -24,7 +24,7 @@ public class EmailConfigForNotifications {
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.debug", "false"); // Set to false in production
+        props.put("mail.debug", "false");
 
         return mailSender;
     }

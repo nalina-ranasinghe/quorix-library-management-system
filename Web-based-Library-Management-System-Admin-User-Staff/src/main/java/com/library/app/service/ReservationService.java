@@ -22,7 +22,7 @@ public class ReservationService {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
 
-    // --- NOTIFICATION INJECTION ---
+    // NOTIFICATION INJECTION
     private final NotificationService notificationService;
 
     @Transactional
@@ -49,7 +49,7 @@ public class ReservationService {
         book.setQuantity(book.getQuantity() - 1);
         bookRepository.update(book);
 
-        // --- NOTIFICATION TRIGGER: Send a confirmation alert ---
+        //NOTIFICATION TRIGGER: Send a confirmation alert
         String message = "You have successfully reserved '" + book.getTitle() + "'.";
         notificationService.createNotification(user.getUserId(), message, "RESERVATION_CONFIRMATION");
     }

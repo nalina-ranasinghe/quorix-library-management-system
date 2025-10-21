@@ -32,7 +32,7 @@ public class ReportService {
         reportDto.setTotalBorrowingsLast30Days(borrowingsLastMonth);
         reportDto.setNewUsersLast30Days(newUsersLastMonth);
 
-        // --- FIX: Add null check ---
+        // Add null check
         if (principal != null) {
             reportLogService.logReportGeneration("Dashboard Summary", principal.getName());
         }
@@ -44,7 +44,7 @@ public class ReportService {
         List<TopUserReportDto> topUsers = reportRepository.findTopUsers(10);
         Map<String, Object> reportData = Map.of("popularBooks", popularBooks, "topUsers", topUsers);
 
-        // --- FIX: Add null check ---
+        //Add null check
         if (principal != null) {
             reportLogService.logReportGeneration("Usage Patterns Report", principal.getName());
         }
@@ -61,7 +61,7 @@ public class ReportService {
                 "todaysAttendance", todaysAttendance
         );
 
-        // --- FIX: Add null check ---
+        // Add null check
         if (principal != null) {
             reportLogService.logReportGeneration("Operational Report", principal.getName());
         }

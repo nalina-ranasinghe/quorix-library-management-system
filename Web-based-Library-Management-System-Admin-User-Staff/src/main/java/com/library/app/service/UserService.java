@@ -50,9 +50,7 @@ public class UserService {
         return savedUser;
     }
 
-    // ===============================================
-    // == NEW METHODS FOR MEMBERSHIP APPROVAL ==
-    // ===============================================
+    // New membership approval
 
     /**
      * Finds all users with a 'PENDING' status.
@@ -81,9 +79,7 @@ public class UserService {
         this.deleteUser(userId);
     }
 
-    // ===============================================
-    // == YOUR EXISTING METHODS ARE PRESERVED BELOW ==
-    // ===============================================
+
 
     public List<User> findAllUsers() {
         return userRepo.findAll();
@@ -98,7 +94,7 @@ public class UserService {
         boolean isNewUser = user.getUserId() == null || user.getUserId() == 0;
 
         if (isNewUser) {
-            // ADDED: Check for duplicates before saving a NEW user
+            // Check for duplicates before saving a NEW user
             if (userRepo.existsByUsernameIgnoreCase(user.getUsername())) {
                 throw new IllegalArgumentException("Username '" + user.getUsername() + "' already exists.");
             }

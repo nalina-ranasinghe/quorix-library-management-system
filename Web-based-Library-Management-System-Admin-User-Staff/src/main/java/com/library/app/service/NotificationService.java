@@ -60,7 +60,7 @@ public class NotificationService {
         int id = announcementIdCounter.getAndIncrement();
         announcements.put(id, new Announcement(id, title, message, createdBy, LocalDateTime.now()));
 
-        // --- 2. NEW: Send an email to all users ---
+        // Send an email to all users
         String fullMessage = String.format("Title: %s. Message: %s", title, message);
         String notificationType = "ANNOUNCEMENT";
 

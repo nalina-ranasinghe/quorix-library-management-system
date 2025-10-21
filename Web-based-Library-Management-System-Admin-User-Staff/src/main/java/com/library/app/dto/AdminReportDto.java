@@ -5,7 +5,7 @@ import java.util.List;
 
 @Data
 public class AdminReportDto {
-    // UPDATED: Use our new, specific DTO
+
     private List<MostBorrowedBookDto> mostBorrowedBooks;
 
     private int totalBorrowingsLast30Days;

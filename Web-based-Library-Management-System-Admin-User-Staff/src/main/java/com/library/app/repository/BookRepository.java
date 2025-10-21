@@ -42,7 +42,7 @@ public class BookRepository {
         return jdbcTemplate.query(sql, new Object[]{id}, bookRowMapper).stream().findFirst();
     }
 
-    // --- NEW METHODS ---
+
 
     /**
      * Fetches all books from the database.

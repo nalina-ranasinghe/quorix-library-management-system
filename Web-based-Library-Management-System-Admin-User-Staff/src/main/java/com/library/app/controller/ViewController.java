@@ -39,8 +39,8 @@ public class ViewController {
         return "home";
     }
 
-    // --- PASSWORD RESET ENDPOINTS ---
-    // (Keep all your existing password reset methods here)
+    //  PASSWORD RESET ENDPOINTS
+
     @GetMapping("/forgot-password")
     public String showForgotPasswordForm() {
         return "forgot-password";
@@ -75,7 +75,7 @@ public class ViewController {
         return "redirect:/";
     }
 
-    // --- SETTINGS PAGE ENDPOINTS ---
+    //  SETTINGS PAGE ENDPOINTS
 
     @GetMapping("/settings")
     public String showSettingsForm(Model model, Principal principal, RedirectAttributes ra) {

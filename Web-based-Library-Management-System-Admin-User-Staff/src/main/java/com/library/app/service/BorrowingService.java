@@ -23,7 +23,7 @@ public class BorrowingService {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
 
-    // --- NOTIFICATION INJECTION ---
+    //NOTIFICATION INJECTION
     private final WaitlistRepository waitlistRepository;
     private final NotificationService notificationService;
 
@@ -49,7 +49,7 @@ public class BorrowingService {
     }
 
     /**
-     * This method now handles the logic for a book return.
+     *  logic for a book return.
      * It updates the book's quantity and then checks the waitlist
      * to notify the next user if the book becomes available.
      */
@@ -72,7 +72,7 @@ public class BorrowingService {
         book.setQuantity(book.getQuantity() + 1);
         bookRepository.update(book);
 
-        // --- NOTIFICATION TRIGGER: Check waitlist and notify user ---
+        // NOTIFICATION TRIGGER Check waitlist and notify user
         Optional<User> waitlistedUser = waitlistRepository.findFirstUserInWaitlist(book.getBookId());
 
         waitlistedUser.ifPresent(user -> {

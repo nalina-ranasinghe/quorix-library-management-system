@@ -81,7 +81,7 @@ public class ReportRepository {
 
         return jdbcTemplate.query(sql, new Object[]{limit}, rowMapper);
     }
-    // ... existing methods like findPopularBooks and findTopUsers ...
+
 
     /**
      * Finds all books that are currently borrowed and past their due date.
