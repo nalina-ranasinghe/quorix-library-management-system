@@ -7,483 +7,298 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 
-    <!-- Sidebar Navigation -->
-    <nav class="sidebar">
-        <div class="sidebar-header">
-            <img th:src="@{/images/quorix-logo.png}" alt="Logo" class="sidebar-logo">
-        </div>
-        <ul class="sidebar-nav">
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/staff/library-management}"
-                   th:classappend="${#strings.startsWith(requestURI, '/staff/library-management') ? 'active' : ''}">
-                    <i class="fas fa-book-reader nav-icon"></i>  Library Management
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/staff/books}"
-                   th:classappend="${#strings.startsWith(requestURI, '/staff/books') and not #strings.contains(requestURI, '/new') and not #strings.contains(requestURI, '/missing') ? 'active' : ''}">
-                    <i class="fas fa-table-list nav-icon"></i>  Book Catalog
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/staff/books/new}"
-                   th:classappend="${#strings.contains(requestURI, '/staff/books/new') ? 'active' : ''}">
-                    <i class="fas fa-plus nav-icon"></i>  Add Book
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/staff/books/missing}"
-                   th:classappend="${#strings.contains(requestURI, '/staff/books/missing') ? 'active' : ''}">
-                    <i class="fas fa-triangle-exclamation nav-icon"></i>  Missing Books
-                </a>
-            </li>
-        </ul>
-        <div class="sidebar-footer">
-            <form th:action="@{/logout}" method="post">
-                <button type="submit" class="btn btn-outline-light w-100">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            </form>
-        </div>
-    </nav>
+<nav class="sidebar">
+    <div class="sidebar-header">
+        <img th:src="@{/images/quorix-logo.png}" alt="Logo" class="sidebar-logo">
+    </div>
+    <ul class="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/staff/library-management}"
+               th:classappend="${#strings.startsWith(requestURI, '/staff/library-management') ? 'active' : ''}">
+                <i class="fas fa-book-reader nav-icon"></i>  Library Management
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/staff/books}"
+               th:classappend="${#strings.startsWith(requestURI, '/staff/books') and not #strings.contains(requestURI, '/new') and not #strings.contains(requestURI, '/missing') ? 'active' : ''}">
+                <i class="fas fa-table-list nav-icon"></i>  Book Catalog
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/staff/books/new}"
+               th:classappend="${#strings.contains(requestURI, '/staff/books/new') ? 'active' : ''}">
+                <i class="fas fa-plus nav-icon"></i>  Add Book
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/staff/books/missing}"
+               th:classappend="${#strings.contains(requestURI, '/staff/books/missing') ? 'active' : ''}">
+                <i class="fas fa-triangle-exclamation nav-icon"></i>  Missing Books
+            </a>
+        </li>
+    </ul>
+    <div class="sidebar-footer">
+        <form th:action="@{/logout}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <button type="submit" class="btn btn-outline-light w-100">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </form>
+    </div>
+</nav>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Page Header -->
-        <div class="page-header">
-            <div class="container-fluid">
-                <h1 class="page-title">
-                    <i class="fas fa-book-reader me-3"></i>Library Management
-                </h1>
-                <p class="page-subtitle">Borrow & Return Management</p>
-            </div>
-        </div>
-
-        <!-- Content -->
+<div class="main-content">
+    <div class="page-header">
         <div class="container-fluid">
-            <!-- Alert Container -->
-            <div id="alertContainer"></div>
-
-        </div>
-        <div class="row">
-            <!-- Left Column - Actions -->
-            <div class="col-md-4">
-                <!-- Borrow Book Card -->
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-book me-2"></i>Borrow Book
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <form id="borrowForm">
-                            <div class="mb-3">
-                                <label for="userId" class="form-label">User ID</label>
-                                <input type="number" class="form-control" id="userId" required
-                                       placeholder="Enter user ID">
-                            </div>
-                            <div class="mb-3">
-                                <label for="bookId" class="form-label">Book ID</label>
-                                <input type="number" class="form-control" id="bookId" required
-                                       placeholder="Enter book ID">
-                            </div>
-                            <div class="mb-3">
-                                <label for="borrowDays" class="form-label">Borrow Period (Days)</label>
-                                <select class="form-select" id="borrowDays">
-                                    <option value="7">7 Days</option>
-                                    <option value="14" selected>14 Days</option>
-                                    <option value="21">21 Days</option>
-                                    <option value="30">30 Days</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="fas fa-hand-holding me-2"></i>Borrow Book
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Return Book Card -->
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-undo me-2"></i>Return Book
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <form id="returnForm">
-                            <div class="mb-3">
-                                <label for="returnBorrowingId" class="form-label">Borrowing ID</label>
-                                <input type="number" class="form-control" id="returnBorrowingId" required
-                                       placeholder="Enter borrowing ID">
-                            </div>
-                            <button type="submit" class="btn btn-success w-100">
-                                <i class="fas fa-check me-2"></i>Return Book
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Renew Book Card -->
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-sync-alt me-2"></i>Renew Book
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <form id="renewForm">
-                            <div class="mb-3">
-                                <label for="renewBorrowingId" class="form-label">Borrowing ID</label>
-                                <input type="number" class="form-control" id="renewBorrowingId" required
-                                       placeholder="Enter borrowing ID">
-                            </div>
-                            <div class="mb-3">
-                                <label for="additionalDays" class="form-label">Additional Days</label>
-                                <select class="form-select" id="additionalDays">
-                                    <option value="7">7 Days</option>
-                                    <option value="14" selected>14 Days</option>
-                                    <option value="21">21 Days</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-warning w-100">
-                                <i class="fas fa-redo me-2"></i>Renew Book
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Column - Information -->
-            <div class="col-md-8">
-                <!-- User Borrowings -->
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-list me-2"></i>User's Borrowed Books
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <form id="userBorrowingsForm" class="row g-3">
-                                <div class="col-md-8">
-                                    <input type="number" class="form-control" id="searchUserId"
-                                           placeholder="Enter User ID to view their borrowings">
-                                </div>
-                                <div class="col-md-4">
-                                    <button type="submit" class="btn btn-outline-primary w-100">
-                                        <i class="fas fa-search me-2"></i>Search
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        <div id="userBorrowingsList">
-                            <div class="text-center text-muted py-4">
-                                <i class="fas fa-search fa-2x mb-3"></i>
-                                <p>Enter a User ID to view their borrowed books</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Available Books -->
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-books me-2"></i>Available Books
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row" id="availableBooksList">
-                            <div class="col-12 text-center">
-                                <div class="spinner-border text-primary" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <h1 class="page-title"><i class="fas fa-book-reader me-3"></i>Library Management</h1>
+            <p class="page-subtitle">Borrow & Return Management</p>
+            <p class="text-end text-muted small" id="currentDateTime">Loading date...</p>
         </div>
     </div>
 
+    <div class="container-fluid">
+        <div id="alertContainer"></div>
+        <div class="row">
+            <div class="col-lg-4 col-md-5 mb-4">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white"><h5 class="card-title mb-0"><i class="fas fa-hand-holding me-2"></i>Borrow Book</h5></div>
+                    <div class="card-body">
+                        <form id="borrowForm">
+                            <div class="mb-3"><label for="userId" class="form-label">User ID</label><input type="number" class="form-control" id="userId" required placeholder="Enter User ID"></div>
+                            <div class="mb-3"><label for="bookId" class="form-label">Book ID</label><input type="number" class="form-control" id="bookId" required placeholder="Enter Book ID"></div>
+                            <div class="mb-3"><label for="borrowDays" class="form-label">Borrow Period</label><select class="form-select" id="borrowDays"><option value="7">7 Days</option><option value="14" selected>14 Days</option><option value="21">21 Days</option><option value="30">30 Days</option></select></div>
+                            <button type="submit" class="btn btn-primary w-100"><i class="fas fa-check me-2"></i>Confirm Borrow</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-success text-white"><h5 class="card-title mb-0"><i class="fas fa-undo me-2"></i>Return Book</h5></div>
+                    <div class="card-body">
+                        <form id="returnForm">
+                            <div class="mb-3"><label for="returnBorrowingId" class="form-label">Borrowing ID</label><input type="number" class="form-control" id="returnBorrowingId" required placeholder="Enter Borrowing ID"></div>
+                            <button type="submit" class="btn btn-success w-100"><i class="fas fa-check-double me-2"></i>Confirm Return</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card shadow-sm">
+                    <div class="card-header bg-warning text-dark"><h5 class="card-title mb-0"><i class="fas fa-sync-alt me-2"></i>Renew Book</h5></div>
+                    <div class="card-body">
+                        <form id="renewForm">
+                            <div class="mb-3"><label for="renewBorrowingId" class="form-label">Borrowing ID</label><input type="number" class="form-control" id="renewBorrowingId" required placeholder="Enter Borrowing ID"></div>
+                            <div class="mb-3"><label for="additionalDays" class="form-label">Extend By</label><select class="form-select" id="additionalDays"><option value="7">7 Days</option><option value="14" selected>14 Days</option><option value="21">21 Days</option></select></div>
+                            <button type="submit" class="btn btn-warning w-100"><i class="fas fa-redo me-2"></i>Confirm Renew</button>
+                        </form>
+                    </div>
+                </div>
+            </div><div class="col-lg-8 col-md-7">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header"><h5 class="card-title mb-0"><i class="fas fa-user-tag me-2"></i>User's Borrowed Books</h5></div>
+                <div class="card-body">
+                    <form id="userBorrowingsForm" class="row g-2 align-items-center mb-3">
+                        <div class="col-md-8"><label for="searchUserId" class="visually-hidden">User ID</label><input type="number" class="form-control" id="searchUserId" placeholder="Enter User ID to view"></div>
+                        <div class="col-md-4"><button type="submit" class="btn btn-outline-secondary w-100"><i class="fas fa-search me-2"></i>Search</button></div>
+                    </form>
+                    <div id="userBorrowingsList" style="max-height: 400px; overflow-y: auto;">
+                        <div class="text-center text-muted py-5"><i class="fas fa-search fa-2x mb-2"></i><p>Enter User ID above.</p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow-sm">
+                <div class="card-header"><h5 class="card-title mb-0"><i class="fas fa-book-open me-2"></i>Available Books</h5></div>
+                <div class="card-body">
+                    <div class="row g-3" id="availableBooksList" style="max-height: 400px; overflow-y: auto;">
+                        <div class="col-12 text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>
+                    </div>
+                </div>
+            </div>
+        </div></div></div></div> <footer class="footer sidebar-footer">
+    <p class="mb-0">© 2025 SLIIT - SE2030 Group 2025-Y2-SI-KU-16. All Rights Reserved.</p>
+</footer>
 
-    <footer class="footer sidebar-footer">
-                <p class="mb-0">© 2025 SLIIT - SE2030 Group 2025-Y2-SI-KU-16. All Rights Reserved.</p>
-        </footer>
-
-<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // API Base URL
-    const API_BASE = '/staff/api';
+    //Get CSRF token
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+    const API_BASE = '/staff/api'; // API Base URL
 
-    // Show alert function
-    function showAlert(message, type = 'success') {
+    //Utility Functions
+    function showAlert(message, type = 'success') { /* ... (same as before) ... */
+        const icon = type === 'success' ? 'fa-check-circle' : type === 'danger' ? 'fa-exclamation-triangle' : 'fa-info-circle';
         const alertContainer = document.getElementById('alertContainer');
         const alertId = 'alert-' + Date.now();
-
-        const alertHTML = `
-                <div id="${alertId}" class="alert alert-${type} alert-dismissible fade show" role="alert">
-                    ${message}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            `;
-
-        alertContainer.innerHTML += alertHTML;
-
-        // Auto remove after 5 seconds
-        setTimeout(() => {
-            const alert = document.getElementById(alertId);
-            if (alert) {
-                alert.remove();
-            }
-        }, 5000);
+        const alertHTML = `<div id="${alertId}" class="alert alert-${type} alert-dismissible fade show" role="alert"><i class="fas ${icon} me-2"></i> ${message}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`;
+        alertContainer.insertAdjacentHTML('beforeend', alertHTML);
+        setTimeout(() => document.getElementById(alertId)?.remove(), 5000);
+    }
+    function updateDateTime() { /* ... (same as before) ... */
+        const elem = document.getElementById('currentDateTime');
+        if (elem) elem.textContent = new Date().toLocaleString();
     }
 
-    // Load available books
-    async function loadAvailableBooks() {
+    // --- API Call Helper ---
+    async function apiCall(endpoint, method = 'GET', body = null) { /* ... (same as before) ... */
+        const options = { method: method, headers: { [csrfHeader]: csrfToken } };
+        if (body) { options.headers['Content-Type'] = 'application/json'; options.body = JSON.stringify(body); }
+        const response = await fetch(`${API_BASE}${endpoint}`, options);
+        if (!response.ok) {
+            let errorMsg = `HTTP Error: ${response.status} ${response.statusText}`;
+            try { const errorData = await response.json(); if (errorData && errorData.message) errorMsg = errorData.message; } catch (e) { /* ignore */ }
+            throw new Error(errorMsg);
+        }
+        return response.json();
+    }
+
+    // Data Loading
+    async function loadAvailableBooks() { /* ... (same as before) ... */
+        const container = document.getElementById('availableBooksList');
         try {
-            const response = await fetch('/staff/api/available-books');
-            const books = await response.json();
-
-            const container = document.getElementById('availableBooksList');
-
-            if (books.length === 0) {
-                container.innerHTML = `
-                        <div class="col-12 text-center text-muted py-4">
-                            <i class="fas fa-book-open fa-2x mb-3"></i>
-                            <p>No available books at the moment</p>
-                        </div>
-                    `;
-                return;
+            const books = await apiCall('/available-books');
+            if (!books || books.length === 0) {
+                container.innerHTML = `<div class="col-12 text-center text-muted py-5"><i class="fas fa-book-open fa-2x mb-2"></i><p>No available books</p></div>`;
+            } else {
+                container.innerHTML = books.map(book => `
+                     <div class="col-md-6 mb-3">
+                         <div class="card book-card h-100 shadow-sm border-light">
+                             <div class="card-body d-flex flex-column small">
+                                 <h6 class="card-title text-primary mb-1">${book.title || 'N/A'}</h6>
+                                 <p class="card-text text-muted mb-1">By ${book.author || 'N/A'}</p>
+                                 <p class="card-text mb-1">ISBN: ${book.isbn || 'N/A'}</p>
+                                 <p class="card-text mb-2">Category: ${book.category || 'N/A'}</p>
+                                 <div class="mt-auto d-flex justify-content-between align-items-center">
+                                     <span class="badge bg-success">Qty: ${book.quantity ?? 'N/A'}</span>
+                                     <span class="text-muted">ID: ${book.id ?? 'N/A'}</span>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>`).join('');
             }
-
-            container.innerHTML = books.map(book => `
-                    <div class="col-md-6 mb-3">
-                        <div class="card book-card h-100">
-                            <div class="card-body">
-                                <h6 class="card-title">${book.title}</h6>
-                                <p class="card-text mb-1">
-                                    <small class="text-muted">By ${book.author}</small>
-                                </p>
-                                <p class="card-text mb-1">
-                                    <small><strong>ISBN:</strong> ${book.isbn}</small>
-                                </p>
-                                <p class="card-text mb-2">
-                                    <small><strong>Category:</strong> ${book.category}</small>
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="badge bg-success">Available: ${book.quantity}</span>
-                                    <small class="text-muted">ID: ${book.bookId}</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-
         } catch (error) {
             console.error('Error loading available books:', error);
-            showAlert('Error loading available books', 'danger');
+            container.innerHTML = `<div class="col-12 text-center text-danger py-5"><i class="fas fa-exclamation-triangle fa-2x mb-2"></i><p>Error loading books</p></div>`;
+            showAlert(error.message, 'danger');
         }
     }
 
-    // Load user borrowings
-    async function loadUserBorrowings(userId) {
+    async function loadUserBorrowings(userId) { /* ... (same as before) ... */
+        const container = document.getElementById('userBorrowingsList');
+        if (!userId) { container.innerHTML = `<div class="text-center text-muted py-5"><i class="fas fa-search fa-2x mb-2"></i><p>Enter User ID.</p></div>`; return; }
+        container.innerHTML = `<div class="text-center py-5"><div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div></div>`;
         try {
-            const response = await fetch(`/staff/api/user-borrowings/${userId}`);
-            const borrowings = await response.json();
-
-            const container = document.getElementById('userBorrowingsList');
-
-            if (borrowings.length === 0) {
-                container.innerHTML = `
-                        <div class="text-center text-muted py-4">
-                            <i class="fas fa-book fa-2x mb-3"></i>
-                            <p>No borrowed books found for this user</p>
-                        </div>
-                    `;
-                return;
+            const borrowings = await apiCall(`/user-borrowings/${userId}`);
+            if (!borrowings || borrowings.length === 0) {
+                container.innerHTML = `<div class="text-center text-muted py-5"><i class="fas fa-book fa-2x mb-2"></i><p>No active borrowings for User ID ${userId}</p></div>`;
+            } else {
+                container.innerHTML = borrowings.map(b => {
+                    const dueDate = b.dueDate ? new Date(b.dueDate) : null;
+                    const borrowDate = b.borrowDate ? new Date(b.borrowDate) : null;
+                    const returnDate = b.returnDate ? new Date(b.returnDate) : null;
+                    const isOverdue = dueDate && dueDate < new Date() && b.status === 'BORROWED';
+                    const statusClass = isOverdue ? 'text-danger fw-bold' : (b.status === 'BORROWED' ? 'text-warning' : 'text-success');
+                    return `
+                         <div class="card mb-2 shadow-sm border-light small">
+                             <div class="card-body">
+                                 <div class="row align-items-center g-2">
+                                     <div class="col-md-7">
+                                         <strong class="d-block">${b.bookTitle || 'N/A'}</strong>
+                                         <span class="text-muted d-block">User: ${b.userName || 'N/A'} (ID: ${b.userId ?? 'N/A'})</span>
+                                         <span class="text-muted d-block">Borrowed: ${borrowDate ? borrowDate.toLocaleDateString() : 'N/A'}</span>
+                                         <span class="text-muted d-block">Due: ${dueDate ? dueDate.toLocaleDateString() : 'N/A'}</span>
+                                         <span class="d-block ${statusClass}">${isOverdue ? 'OVERDUE' : (b.status || 'N/A')}</span>
+                                         ${returnDate ? `<span class="text-muted d-block">Returned: ${returnDate.toLocaleDateString()}</span>` : ''}
+                                     </div>
+                                     <div class="col-md-5 text-md-end">
+                                         <span class="text-muted d-block mb-1">Borrow ID: ${b.borrowingId ?? 'N/A'}</span>
+                                         ${b.status === 'BORROWED' ? `
+                                             <div class="btn-group btn-group-sm">
+                                                 <button class="btn btn-success" onclick="returnBook(${b.borrowingId})"><i class="fas fa-check"></i> Rtn</button>
+                                                 <button class="btn btn-warning" onclick="promptRenew(${b.borrowingId})"><i class="fas fa-redo"></i> Ren</button>
+                                             </div>
+                                         ` : ''}
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>`;
+                }).join('');
             }
-
-            container.innerHTML = borrowings.map(borrowing => {
-                const dueDate = new Date(borrowing.dueDate);
-                const isOverdue = dueDate < new Date() && borrowing.status === 'BORROWED';
-                const statusClass = isOverdue ? 'status-overdue' :
-                    borrowing.status === 'BORROWED' ? 'status-borrowed' : 'status-returned';
-
-                return `
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <h6 class="card-title">${borrowing.bookTitle}</h6>
-                                        <p class="card-text mb-1">
-                                            <small class="text-muted">User: ${borrowing.userName}</small>
-                                        </p>
-                                        <p class="card-text mb-1">
-                                            <small><strong>Borrowed:</strong> ${new Date(borrowing.borrowDate).toLocaleDateString()}</small>
-                                        </p>
-                                        <p class="card-text mb-1">
-                                            <small><strong>Due:</strong> ${dueDate.toLocaleDateString()}</small>
-                                        </p>
-                                        <p class="card-text">
-                                            <span class="${statusClass}">
-                                                ${isOverdue ? 'OVERDUE' : borrowing.status}
-                                                ${borrowing.returnDate ? `(Returned: ${new Date(borrowing.returnDate).toLocaleDateString()})` : ''}
-                                            </span>
-                                        </p>
-                                    </div>
-                                    <div class="col-md-4 action-buttons">
-                                        <div class="d-grid gap-2">
-                                            <small class="text-muted mb-2">Borrowing ID: ${borrowing.borrowingId}</small>
-                                            ${borrowing.status === 'BORROWED' ? `
-                                                <button class="btn btn-sm btn-success" onclick="returnBook(${borrowing.borrowingId})">
-                                                    <i class="fas fa-check me-1"></i>Return
-                                                </button>
-                                                <button class="btn btn-sm btn-warning" onclick="renewBook(${borrowing.borrowingId})">
-                                                    <i class="fas fa-redo me-1"></i>Renew
-                                                </button>
-                                            ` : ''}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-            }).join('');
-
         } catch (error) {
             console.error('Error loading user borrowings:', error);
-            showAlert('Error loading user borrowings', 'danger');
+            container.innerHTML = `<div class="text-center text-danger py-5"><i class="fas fa-exclamation-triangle fa-2x mb-2"></i><p>Error loading borrowings</p></div>`;
+            showAlert(error.message, 'danger');
         }
     }
 
-    // Form handlers
-    document.getElementById('borrowForm').addEventListener('submit', async (e) => {
+    //Action Functions
+    async function handleBorrowSubmit(e) { /* ... (same as before) ... */
         e.preventDefault();
-
         const userId = document.getElementById('userId').value;
         const bookId = document.getElementById('bookId').value;
         const days = document.getElementById('borrowDays').value;
-
+        if (!userId || !bookId || !days) { showAlert('Missing User ID, Book ID, or Days.', 'warning'); return; }
         try {
-            const response = await fetch('/staff/api/borrow-book', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId, bookId, days: parseInt(days) })
-            });
-
-            const result = await response.json();
-
+            const result = await apiCall('/borrow-book', 'POST', { userId: parseInt(userId), bookId: parseInt(bookId), days: parseInt(days) });
+            showAlert(result.message, result.success ? 'success' : 'danger');
             if (result.success) {
-                showAlert(result.message, 'success');
-                document.getElementById('borrowForm').reset();
-                loadAvailableBooks();
-                if (document.getElementById('searchUserId').value) {
-                    loadUserBorrowings(document.getElementById('searchUserId').value);
-                }
-            } else {
-                showAlert(result.message, 'danger');
+                document.getElementById('borrowForm').reset(); loadAvailableBooks();
+                const searchUserId = document.getElementById('searchUserId').value; if (searchUserId) loadUserBorrowings(searchUserId);
             }
-        } catch (error) {
-            showAlert('Error borrowing book: ' + error.message, 'danger');
-        }
-    });
-
-    document.getElementById('returnForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const borrowingId = document.getElementById('returnBorrowingId').value;
-        await returnBook(borrowingId);
-    });
-
-    document.getElementById('renewForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const borrowingId = document.getElementById('renewBorrowingId').value;
-        const additionalDays = document.getElementById('additionalDays').value;
-        await renewBook(borrowingId, additionalDays);
-    });
-
-    document.getElementById('userBorrowingsForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const userId = document.getElementById('searchUserId').value;
-        if (userId) {
-            loadUserBorrowings(userId);
-        }
-    });
-
-    // Individual action functions
-    async function returnBook(borrowingId) {
-        try {
-            const response = await fetch(`/staff/api/return-book/${borrowingId}`, {
-                method: 'POST'
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                showAlert(result.message, 'success');
-                document.getElementById('returnForm').reset();
-                loadAvailableBooks();
-                if (document.getElementById('searchUserId').value) {
-                    loadUserBorrowings(document.getElementById('searchUserId').value);
-                }
-            } else {
-                showAlert(result.message, 'danger');
-            }
-        } catch (error) {
-            showAlert('Error returning book: ' + error.message, 'danger');
-        }
+        } catch (error) { showAlert(error.message, 'danger'); }
     }
-
-    async function renewBook(borrowingId, additionalDays = 14) {
-        if (!additionalDays) {
-            additionalDays = document.getElementById('additionalDays').value;
-        }
-
+    async function handleReturnSubmit(e) { /* ... (same as before) ... */
+        e.preventDefault(); await returnBook(document.getElementById('returnBorrowingId').value);
+    }
+    async function returnBook(borrowingId) { /* ... (same as before) ... */
+        if (!borrowingId) { showAlert('Borrowing ID is required.', 'warning'); return; }
         try {
-            const response = await fetch(`/staff/api/renew-book/${borrowingId}?additionalDays=${additionalDays}`, {
-                method: 'POST'
-            });
-
-            const result = await response.json();
-
+            const result = await apiCall(`/return-book/${borrowingId}`, 'POST');
+            showAlert(result.message, result.success ? 'success' : 'danger');
             if (result.success) {
-                showAlert(result.message, 'success');
+                document.getElementById('returnForm').reset(); loadAvailableBooks();
+                const searchUserId = document.getElementById('searchUserId').value; if (searchUserId) loadUserBorrowings(searchUserId);
+            }
+        } catch (error) { showAlert(error.message, 'danger'); }
+    }
+    function promptRenew(borrowingId) { /* ... (same as before) ... */
+        const daysInput = prompt("Renew by how many days?", "14");
+        if (daysInput !== null) { const additionalDays = parseInt(daysInput); if (!isNaN(additionalDays) && additionalDays > 0) { renewBook(borrowingId, additionalDays); } else { showAlert('Invalid number of days.', 'warning'); } }
+    }
+    async function handleRenewSubmit(e) { /* ... (same as before) ... */
+        e.preventDefault(); await renewBook(document.getElementById('renewBorrowingId').value, document.getElementById('additionalDays').value);
+    }
+    async function renewBook(borrowingId, additionalDays) { /* ... (same as before) ... */
+        if (!borrowingId || !additionalDays || additionalDays <= 0) { showAlert('Invalid Borrowing ID or Days.', 'warning'); return; }
+        try {
+            const result = await apiCall(`/renew-book/${borrowingId}?additionalDays=${additionalDays}`, 'POST');
+            showAlert(result.message, result.success ? 'success' : 'danger');
+            if (result.success) {
                 document.getElementById('renewForm').reset();
-                if (document.getElementById('searchUserId').value) {
-                    loadUserBorrowings(document.getElementById('searchUserId').value);
-                }
-            } else {
-                showAlert(result.message, 'danger');
+                const searchUserId = document.getElementById('searchUserId').value; if (searchUserId) loadUserBorrowings(searchUserId);
             }
-        } catch (error) {
-            showAlert('Error renewing book: ' + error.message, 'danger');
-        }
+        } catch (error) { showAlert(error.message, 'danger'); }
     }
 
-    // Update current date time
-    function updateDateTime() {
-        const now = new Date();
-        document.getElementById('currentDateTime').textContent =
-            now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
-    }
+    // Event Listeners
+    document.getElementById('borrowForm').addEventListener('submit', handleBorrowSubmit);
+    document.getElementById('returnForm').addEventListener('submit', handleReturnSubmit);
+    document.getElementById('renewForm').addEventListener('submit', handleRenewSubmit);
+    document.getElementById('userBorrowingsForm').addEventListener('submit', (e) => {
+        e.preventDefault(); loadUserBorrowings(document.getElementById('searchUserId').value);
+    });
 
-    // Initialize page
-    document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Page
+    document.addEventListener('DOMContentLoaded', () => {
         loadAvailableBooks();
         updateDateTime();
         setInterval(updateDateTime, 1000);
     });
+
 </script>
-    </div>
+
 </body>
 </html>
