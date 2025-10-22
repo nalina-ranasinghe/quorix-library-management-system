@@ -59,28 +59,6 @@
         </div>
     </div>
 
-    <div class="card mt-4 animate-fade-in-up" style="animation-delay: 600ms;">
-        <div class="card-header bg-info text-white"><h5 class="mb-0"><i class="fas fa-user-clock me-2"></i>Staff Attendance (Today)</h5></div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead><tr><th>Staff Name</th><th>Role</th><th>Check-In</th><th>Check-Out</th><th class="text-center">Status</th></tr></thead>
-                    <tbody>
-                    <tr th:each="att : ${operationalReportData.todaysAttendance}">
-                        <td th:text="${att.staffName}"></td>
-                        <td th:text="${att.staffRole}"></td>
-                        <td th:text="${#temporals.format(att.checkInTime, 'hh:mm a')}"></td>
-                        <td th:text="${att.checkOutTime != null ? #temporals.format(att.checkOutTime, 'hh:mm a') : '---'}"></td>
-                        <td class="text-center"><span class="badge" th:classappend="${att.status == 'PRESENT' ? 'bg-success' : 'bg-warning'}" th:text="${att.status}"></span></td>
-                    </tr>
-                    <tr th:if="${#lists.isEmpty(operationalReportData.todaysAttendance)}">
-                        <td colspan="5" class="text-center">No staff attendance records for today.</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
 
     <div class="card mt-4 animate-fade-in-up" style="animation-delay: 700ms;">
         <div class="card-header bg-dark text-white"><h5 class="mb-0"><i class="fas fa-history me-2"></i>Report Log</h5></div>
