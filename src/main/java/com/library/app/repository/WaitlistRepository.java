@@ -49,7 +49,19 @@ public class WaitlistRepository {
                 "WHERE w.book_id = ? " +
                 "ORDER BY w.waitlisted_at ASC";
 
-        RowMapper<User> userRowMapper = (rs, rowNum) -> { /* mapping logic */ return new User(); };
+        // Bug 2 fix: was a stub returning new User() — now fully maps all User fields
+        RowMapper<User> userRowMapper = (rs, rowNum) -> {
+            User u = new User();
+            u.setUserId(rs.getInt("user_id"));
+            u.setUsername(rs.getString("username"));
+            u.setFullName(rs.getString("full_name"));
+            u.setEmail(rs.getString("email"));
+            u.setPhone(rs.getString("phone"));
+            u.setPasswordHash(rs.getString("password_hash"));
+            u.setRole(rs.getString("role"));
+            u.setStatus(rs.getString("status"));
+            return u;
+        };
         return jdbcTemplate.query(sql, new Object[]{bookId}, userRowMapper).stream().findFirst();
     }
 

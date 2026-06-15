@@ -31,3 +31,14 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Security — Never commit real credentials ###
+# Copy application.properties.example → application.properties and fill in your values
+src/main/resources/application.properties
+
+### Documentation — add PDFs manually to Documentation/ folder ###
+*.pdf
+
+### OS ###
+.DS_Store
+Thumbs.db

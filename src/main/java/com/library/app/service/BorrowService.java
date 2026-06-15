@@ -17,12 +17,15 @@ public class BorrowService {
     @Autowired
     private DatabaseService databaseService;
 
-    // Configuration constants (remain the same)
+    // Bug 1 fix: inject BorrowingService to unify the return-book path
+    @Autowired
+    private BorrowingService borrowingService;
+
+    // Configuration constants
     private static final int MAX_BORROWING_LIMIT = 5;
-    private static final String ACTIVE_USER_STATUS = "Active";
+    private static final String ACTIVE_USER_STATUS = "ACTIVE";  // Bug 3 fix: was "Active" — DB stores uppercase
     private static final String AVAILABLE_BOOK_STATUS = "Available";
-    private static final String BORROWED_STATUS = "BORROWED";
-    // RETURNED_STATUS constant is no longer strictly needed for this logic but can remain
+    private static final String BORROWED_STATUS = "BORROWED";  // Bug 3 fix: re-added (used in renewBook)
 
     // borrowBook method (remains the same)
     @Transactional
@@ -47,47 +50,26 @@ public class BorrowService {
     }
 
 
-    // *** MODIFIED returnBook METHOD ***
+    // Bug 1 fix: unified returnBook — delegates to BorrowingService so the record is marked
+    // RETURNED (not deleted), return_date is set, and the waitlist notification is triggered.
     @Transactional
     public String returnBook(Integer borrowingId) {
-        // 1. Find Borrowing Record to get book ID
-        Optional<Borrowing> borrowingOpt = databaseService.findBorrowingById(borrowingId);
-        if (borrowingOpt.isEmpty()) {
-            return "❌ Error: Borrowing record not found with ID: " + borrowingId;
+        if (borrowingId == null || borrowingId <= 0) {
+            return "❌ Error: Invalid Borrowing ID.";
         }
-        Borrowing borrowing = borrowingOpt.get();
-
-        // Optional: Check if already returned (though deletion handles this implicitly)
-        // if (RETURNED_STATUS.equalsIgnoreCase(borrowing.getStatus())) {
-        //     return "⚠️ Warning: Already returned.";
-        // }
-
-        // 2. Perform Return: Delete the record
         try {
-            int rowsAffected = databaseService.deleteBorrowingById(borrowingId);
-            if (rowsAffected == 0) {
-                // Should not happen if findBorrowingById succeeded, but good practice
-                return "❌ Error: Could not find borrowing record to delete (ID: " + borrowingId + ").";
-            }
-
-            // 3. Update Book Quantity (increment)
-            Optional<Book> bookOpt = databaseService.findBookById(borrowing.getBookId());
-            if (bookOpt.isPresent()) {
-                Book book = bookOpt.get();
-                databaseService.updateBookQuantityAndStatus(borrowing.getBookId(), book.getQuantity() + 1);
-            } else {
-                // Log a warning if the associated book is missing
-                System.err.println("Warning: Book not found during return, ID: " + borrowing.getBookId() + " for Borrowing ID: " + borrowingId);
-            }
-
-            return "✅ Success: Book return processed (record deleted)."; // Updated message
+            borrowingService.returnBook(borrowingId);
+            return "✅ Success: Book returned successfully.";
+        } catch (IllegalArgumentException e) {
+            return "❌ Error: " + e.getMessage();
+        } catch (IllegalStateException e) {
+            return "⚠️ Warning: " + e.getMessage();
         } catch (Exception e) {
-            System.err.println("CRITICAL ERROR during returnBook (delete): " + e.getMessage());
+            System.err.println("CRITICAL ERROR during returnBook: " + e.getMessage());
             e.printStackTrace();
             return "❌ Error: System error during return process.";
         }
     }
-    // *** END OF MODIFIED METHOD ***
 
 
     // renewBook method (remains the same)

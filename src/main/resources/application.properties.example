@@ -1,0 +1,33 @@
+spring.application.name=app
+
+# ============================================================
+# DATABASE CONFIGURATION
+# Update these values to match your local SQL Server setup.
+# Default: SQL Server on localhost:1433, database named LibraryDB
+# ============================================================
+spring.datasource.url=jdbc:sqlserver://localhost:1433;databaseName=LibraryDB;encrypt=true;trustServerCertificate=true
+spring.datasource.username=YOUR_DB_USERNAME
+spring.datasource.password=YOUR_DB_PASSWORD
+spring.datasource.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+# ============================================================
+# EMAIL CONFIGURATION (Optional for full functionality)
+# To enable email notifications and password reset features,
+# provide a Gmail account and its App Password.
+# Guide: https://support.google.com/accounts/answer/185833
+# ============================================================
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=YOUR_GMAIL_ADDRESS
+spring.mail.password=YOUR_GMAIL_APP_PASSWORD
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+# JPA / Hibernate settings
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.SQLServerDialect
+
+# Library Email Settings
+library.email.from=noreply@quorixlibrary.com
+library.email.admin=admin@quorixlibrary.com
