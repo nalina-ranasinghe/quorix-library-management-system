@@ -4,9 +4,9 @@
 -- =============================================================================
 -- DEFAULT LOGIN CREDENTIALS (change these after first login):
 --
---   Admin  → username: admin      password: Admin@123
---   Staff  → username: staff      password: Staff@123
---   User   → username: john_doe   password: User@123
+--   Admin  → username: admin      password: admin
+--   Staff  → username: staff      password: staff
+--   User   → username: john_doe   password: password
 --
 -- Passwords are BCrypt-hashed (strength 10). To change them, update the
 -- password_hash column or use the app's "Forgot Password" / account settings.
@@ -30,9 +30,9 @@ GO
 
 -- -------------------------------------------------------
 -- 2. Seed Users
--- BCrypt hash for "Admin@123"  → $2a$10$7t5z0HaXQdyaNIRf7QY9E.vqtl0WZVRsXBWfCFG.NbJKOlHWPHwAy
--- BCrypt hash for "Staff@123"  → $2a$10$N7vCFd2BVCY6S6PJ0w/kZ.JATW.VtpKUqfq.J4/sGRFJ5ydJUWEG
--- BCrypt hash for "User@123"   → $2a$10$DowJonesXGQqOhSm9lM8mO2F3IyODi5B5DWD5ZMXiHq3hZhDj6qOm
+-- BCrypt hash for "admin"      → $2a$10$b/13EiKzAAMt40FaOLGuJ.6Ynhy2bDaSuFm1m4ddPmw2J2JGRfTCS
+-- BCrypt hash for "staff"      → $2a$10$SRkGyPo0n7P1dc81DkKTo.AjHAv6GBUBH7B5woobFgOEHRZfW/67q
+-- BCrypt hash for "password"   → $2a$10$aHG7IkhCcQnA8lmR6JiI3exYeDoCHXo6MVzheH4iLjsJ8HEdjqB1y
 -- -------------------------------------------------------
 IF NOT EXISTS (SELECT 1 FROM Users WHERE username = 'admin')
     INSERT INTO Users (username, full_name, email, phone, password_hash, role, status)
@@ -41,7 +41,7 @@ IF NOT EXISTS (SELECT 1 FROM Users WHERE username = 'admin')
         'System Administrator',
         'admin@quorixlibrary.com',
         '+94771234567',
-        '$2a$10$7t5z0HaXQdyaNIRf7QY9E.vqtl0WZVRsXBWfCFG.NbJKOlHWPHwAy',
+        '$2a$10$b/13EiKzAAMt40FaOLGuJ.6Ynhy2bDaSuFm1m4ddPmw2J2JGRfTCS',
         'ADMIN',
         'ACTIVE'
     );
@@ -53,7 +53,7 @@ IF NOT EXISTS (SELECT 1 FROM Users WHERE username = 'staff')
         'Library Staff',
         'staff@quorixlibrary.com',
         '+94777654321',
-        '$2a$10$N7vCFd2BVCY6S6PJ0w/kZ.JATW.VtpKUqfq.J4/sGRFJ5ydJUWEG',
+        '$2a$10$SRkGyPo0n7P1dc81DkKTo.AjHAv6GBUBH7B5woobFgOEHRZfW/67q',
         'STAFF',
         'ACTIVE'
     );
@@ -65,7 +65,7 @@ IF NOT EXISTS (SELECT 1 FROM Users WHERE username = 'john_doe')
         'John Doe',
         'john.doe@example.com',
         '+94770000001',
-        '$2a$10$DowJonesXGQqOhSm9lM8mO2F3IyODi5B5DWD5ZMXiHq3hZhDj6qOm',
+        '$2a$10$aHG7IkhCcQnA8lmR6JiI3exYeDoCHXo6MVzheH4iLjsJ8HEdjqB1y',
         'END_USER',
         'ACTIVE'
     );
@@ -158,7 +158,7 @@ GO
 PRINT 'Seed data inserted successfully.';
 PRINT '';
 PRINT 'Default login credentials:';
-PRINT '  Admin  → username: admin    | password: Admin@123';
-PRINT '  Staff  → username: staff    | password: Staff@123';
-PRINT '  User   → username: john_doe | password: User@123';
+PRINT '  Admin  → username: admin    | password: admin';
+PRINT '  Staff  → username: staff    | password: staff';
+PRINT '  User   → username: john_doe | password: password';
 GO
