@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="src/main/resources/static/images/quorix-logo.png" alt="Quorix Logo" width="220" />
+
 # 📚 Quorix Library Management System
 
 **A full-stack web application for managing a digital library — built by a team of six university students.**
@@ -150,7 +152,7 @@ cd quorix-library-management-system
 
 #### Step 2 — Set up the database
 
-1. Open **SQL Server Management Studio (SSMS)** and connect to your local SQL Server instance.
+1. Open **Microsoft SQL Server Management Studio (MSSMS)** and connect to your local SQL Server instance.
 2. Create a new database called `LibraryDB`:
    ```sql
    CREATE DATABASE LibraryDB;
@@ -238,24 +240,34 @@ src/
 
 ## 👥 Team & Contributions
 
-This project was developed by **Group 16** as part of the *IT2080 — Object Oriented Programming* module in Year 2, Semester 1 at SLIIT.
+This project was developed by **Group 16** as part of the *SE2030 — Software Engineering* module in Year 2, Semester 1 at SLIIT.
 
-| Member | Role |
+| Member | Role & Contributions |
 |---|---|
 | **Nalina Ranasinghe** (Team Lead) | User Account Management — registration flow, role-based authentication, approval system, password reset, account settings |
-| Member 2 | *(Contribution area)* |
-| Member 3 | *(Contribution area)* |
-| Member 4 | *(Contribution area)* |
-| Member 5 | *(Contribution area)* |
-| Member 6 | *(Contribution area)* |
-
-> 📄 Full project documentation and final report are available in the [`Documentation/`](Documentation/) folder.
+| **Tinara Rajanayake** | Notification System — Building the automated notification service for managing and delivering all system-generated alerts via email and dashboard. |
+| **Chamoda Kumarathunga** | Book Cataloging and Inventory — Building the book catalog entry forms, search functionality, and inventory management. |
+| **Dumindu Karunathilaka** | Reporting and Usage Analytics — Facilitating Scrum events and implementing the reporting and Usage Analytics module. |
+| **Janidu Gunathilaka** | Borrowing, Returning and Renewals — Developing the core circulation workflows, calculating due dates, and managing renewals. |
+| **Thanuja Mudalige** | Online Search and Reservation — Implementing the public search interface, reservation system, and the waitlist functionality for unavailable books. |
 
 ---
 
 ## 📸 Screenshots
 
-> *Screenshots and demo recordings can be found in the [`Documentation/`](Documentation/) folder.*
+<p align="center">
+  <img src="Screenshots/1_login.png" alt="Login Page" width="800">
+  <br><em>Login Page</em><br><br>
+  
+  <img src="Screenshots/2_admin_dashboard.png" alt="Admin Dashboard" width="800">
+  <br><em>Admin Dashboard</em><br><br>
+  
+  <img src="Screenshots/3_book_catalog.png" alt="Book Catalog" width="800">
+  <br><em>Book Catalog</em><br><br>
+
+  <img src="Screenshots/4_users_management.png" alt="Users Management" width="800">
+  <br><em>Users Management</em>
+</p>
 
 ---
 
