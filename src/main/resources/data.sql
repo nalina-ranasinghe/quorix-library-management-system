@@ -1,164 +1,127 @@
--- =============================================================================
--- Quorix Library Management System — Seed Data
--- Run this AFTER schema.sql
--- =============================================================================
--- DEFAULT LOGIN CREDENTIALS (change these after first login):
---
---   Admin  → username: admin      password: admin
---   Staff  → username: staff      password: staff
---   User   → username: john_doe   password: password
---
--- Passwords are BCrypt-hashed (strength 10). To change them, update the
--- password_hash column or use the app's "Forgot Password" / account settings.
--- =============================================================================
-
 USE LibraryDB;
 GO
 
--- -------------------------------------------------------
--- 1. Roles (must be inserted before Users/UserRoles)
--- -------------------------------------------------------
-IF NOT EXISTS (SELECT 1 FROM Roles WHERE role_name = 'ADMIN')
-    INSERT INTO Roles (role_name) VALUES ('ADMIN');
-
-IF NOT EXISTS (SELECT 1 FROM Roles WHERE role_name = 'STAFF')
-    INSERT INTO Roles (role_name) VALUES ('STAFF');
-
-IF NOT EXISTS (SELECT 1 FROM Roles WHERE role_name = 'END_USER')
-    INSERT INTO Roles (role_name) VALUES ('END_USER');
+-- Disable foreign key constraints temporarily to allow clearing tables
+EXEC sp_MSforeachtable "ALTER TABLE ? NOCHECK CONSTRAINT all"
 GO
 
--- -------------------------------------------------------
--- 2. Seed Users
--- BCrypt hash for "admin"      → $2a$10$b/13EiKzAAMt40FaOLGuJ.6Ynhy2bDaSuFm1m4ddPmw2J2JGRfTCS
--- BCrypt hash for "staff"      → $2a$10$SRkGyPo0n7P1dc81DkKTo.AjHAv6GBUBH7B5woobFgOEHRZfW/67q
--- BCrypt hash for "password"   → $2a$10$aHG7IkhCcQnA8lmR6JiI3exYeDoCHXo6MVzheH4iLjsJ8HEdjqB1y
--- -------------------------------------------------------
-IF NOT EXISTS (SELECT 1 FROM Users WHERE username = 'admin')
-    INSERT INTO Users (username, full_name, email, phone, password_hash, role, status)
-    VALUES (
-        'admin',
-        'System Administrator',
-        'admin@quorixlibrary.com',
-        '+94771234567',
-        '$2a$10$b/13EiKzAAMt40FaOLGuJ.6Ynhy2bDaSuFm1m4ddPmw2J2JGRfTCS',
-        'ADMIN',
-        'ACTIVE'
+DELETE FROM Waitlist;
+DELETE FROM Report;
+DELETE FROM StaffAttendance;
+DELETE FROM Notifications;
+DELETE FROM Borrowings;
+DELETE FROM Reservations;
+DELETE FROM UserRoles;
+DELETE FROM Users;
+DELETE FROM Books;
+DELETE FROM Roles;
+IF OBJECT_ID('SystemLogs', 'U') IS NOT NULL DELETE FROM SystemLogs;
+GO
+
+-- Re-enable foreign key constraints
+EXEC sp_MSforeachtable "ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all"
+GO
+
+-- Reseed identity columns if necessary (optional but good practice)
+IF OBJECT_ID('SystemLogs', 'U') IS NOT NULL DBCC CHECKIDENT ('SystemLogs', RESEED, 0);
+DBCC CHECKIDENT ('Notifications', RESEED, 0);
+DBCC CHECKIDENT ('Borrowings', RESEED, 0);
+DBCC CHECKIDENT ('Reservations', RESEED, 0);
+DBCC CHECKIDENT ('Users', RESEED, 0);
+DBCC CHECKIDENT ('Books', RESEED, 0);
+DBCC CHECKIDENT ('Roles', RESEED, 0);
+GO
+
+IF OBJECT_ID('SystemLogs', 'U') IS NULL
+BEGIN
+    CREATE TABLE SystemLogs (
+        log_id INT PRIMARY KEY IDENTITY(1,1),
+        user_id INT NULL,
+        action NVARCHAR(100) NOT NULL,
+        details NVARCHAR(255),
+        created_at DATETIME NOT NULL DEFAULT GETDATE(),
+        FOREIGN KEY (user_id) REFERENCES Users(user_id)
     );
-
-IF NOT EXISTS (SELECT 1 FROM Users WHERE username = 'staff')
-    INSERT INTO Users (username, full_name, email, phone, password_hash, role, status)
-    VALUES (
-        'staff',
-        'Library Staff',
-        'staff@quorixlibrary.com',
-        '+94777654321',
-        '$2a$10$SRkGyPo0n7P1dc81DkKTo.AjHAv6GBUBH7B5woobFgOEHRZfW/67q',
-        'STAFF',
-        'ACTIVE'
-    );
-
-IF NOT EXISTS (SELECT 1 FROM Users WHERE username = 'john_doe')
-    INSERT INTO Users (username, full_name, email, phone, password_hash, role, status)
-    VALUES (
-        'john_doe',
-        'John Doe',
-        'john.doe@example.com',
-        '+94770000001',
-        '$2a$10$aHG7IkhCcQnA8lmR6JiI3exYeDoCHXo6MVzheH4iLjsJ8HEdjqB1y',
-        'END_USER',
-        'ACTIVE'
-    );
+END
 GO
 
--- -------------------------------------------------------
--- 3. Link Users to Roles
--- -------------------------------------------------------
--- Admin role
-IF NOT EXISTS (
-    SELECT 1 FROM UserRoles ur
-    JOIN Users u ON ur.user_id = u.user_id
-    JOIN Roles r ON ur.role_id = r.role_id
-    WHERE u.username = 'admin' AND r.role_name = 'ADMIN'
-)
-    INSERT INTO UserRoles (user_id, role_id)
-    SELECT u.user_id, r.role_id
-    FROM Users u, Roles r
-    WHERE u.username = 'admin' AND r.role_name = 'ADMIN';
+-- ====================================
+-- SAMPLE DATA INSERTS
+-- ====================================
 
--- Staff role
-IF NOT EXISTS (
-    SELECT 1 FROM UserRoles ur
-    JOIN Users u ON ur.user_id = u.user_id
-    JOIN Roles r ON ur.role_id = r.role_id
-    WHERE u.username = 'staff' AND r.role_name = 'STAFF'
-)
-    INSERT INTO UserRoles (user_id, role_id)
-    SELECT u.user_id, r.role_id
-    FROM Users u, Roles r
-    WHERE u.username = 'staff' AND r.role_name = 'STAFF';
+-- Roles
+INSERT INTO Roles (role_name) VALUES 
+('ADMIN'), 
+('STAFF'), 
+('END_USER');
 
--- End user role
-IF NOT EXISTS (
-    SELECT 1 FROM UserRoles ur
-    JOIN Users u ON ur.user_id = u.user_id
-    JOIN Roles r ON ur.role_id = r.role_id
-    WHERE u.username = 'john_doe' AND r.role_name = 'END_USER'
-)
-    INSERT INTO UserRoles (user_id, role_id)
-    SELECT u.user_id, r.role_id
-    FROM Users u, Roles r
-    WHERE u.username = 'john_doe' AND r.role_name = 'END_USER';
-GO
+-- Users
+-- Replaced Password123! with BCrypt hash: $2a$10$AgYCcSa0nDkqtIuOfkRKvuaHLrGFZMhvC..zmk6JfC9MXWXg13Jz2
+INSERT INTO Users (username, full_name, email, phone, password_hash, role)
+VALUES
+('nimal.perera', 'Nimal Perera', 'nimal@example.com', '+94771234567', '$2a$10$AgYCcSa0nDkqtIuOfkRKvuaHLrGFZMhvC..zmk6JfC9MXWXg13Jz2', 'ADMIN'),
+('dilani.jayawardena', 'Dilani Jayawardena', 'dilani@example.com', '+94771234568', '$2a$10$AgYCcSa0nDkqtIuOfkRKvuaHLrGFZMhvC..zmk6JfC9MXWXg13Jz2', 'ADMIN'),
+('roshan.silva', 'Roshan Silva', 'roshan@example.com', '+94771234569', '$2a$10$AgYCcSa0nDkqtIuOfkRKvuaHLrGFZMhvC..zmk6JfC9MXWXg13Jz2', 'STAFF'),
+('harshani.fernando', 'Harshani Fernando', 'harshani@example.com', '+94771234570', '$2a$10$AgYCcSa0nDkqtIuOfkRKvuaHLrGFZMhvC..zmk6JfC9MXWXg13Jz2', 'STAFF'),
+('sanjeewa.kumara', 'Sanjeewa Kumara', 'sanjeewa@example.com', '+94771234571', '$2a$10$AgYCcSa0nDkqtIuOfkRKvuaHLrGFZMhvC..zmk6JfC9MXWXg13Jz2', 'END_USER'),
+('tharindu.jayasena', 'Tharindu Jayasena', 'tharindu@example.com', '+94771234572', '$2a$10$AgYCcSa0nDkqtIuOfkRKvuaHLrGFZMhvC..zmk6JfC9MXWXg13Jz2', 'END_USER');
 
--- -------------------------------------------------------
--- 4. Sample Books (10 entries covering different categories)
--- -------------------------------------------------------
-IF NOT EXISTS (SELECT 1 FROM Books WHERE isbn = '9780132350884')
-    INSERT INTO Books (title, author, isbn, category, location, status, quantity)
-    VALUES ('Clean Code: A Handbook of Agile Software Craftsmanship', 'Robert C. Martin', '9780132350884', 'Software Engineering', 'Shelf A-1', 'Available', 3);
+-- UserRoles (linking Users to Roles)
+INSERT INTO UserRoles (user_id, role_id)
+SELECT user_id, (SELECT role_id FROM Roles WHERE role_name = Users.role)
+FROM Users;
 
-IF NOT EXISTS (SELECT 1 FROM Books WHERE isbn = '9780201633610')
-    INSERT INTO Books (title, author, isbn, category, location, status, quantity)
-    VALUES ('Design Patterns: Elements of Reusable Object-Oriented Software', 'Gang of Four', '9780201633610', 'Software Engineering', 'Shelf A-2', 'Available', 2);
+-- Books
+INSERT INTO Books (title, author, isbn, category, location, quantity)
+VALUES 
+('Atomic Habits', 'James Clear', '9780735211292', 'Self-Help', 'Shelf A1', 5),
+('Think Like a Monk', 'Jay Shetty', '9781982134488', 'Self-Help', 'Shelf A2', 4),
+('48 Laws of Power', 'Robert Greene', '9780140280197', 'Strategy', 'Shelf A3', 3),
+('Dopamine Detox', 'Thibaut Meurisse', '9781774922228', 'Self-Help', 'Shelf A4', 2),
+('Rich Dad Poor Dad', 'Robert Kiyosaki', '9781612680194', 'Finance', 'Shelf A5', 6),
+('The Subtle Art of Not Giving a F*ck', 'Mark Manson', '9780062457714', 'Self-Help', 'Shelf A6', 4),
+('The Psychology of Money', 'Morgan Housel', '9780857197689', 'Finance', 'Shelf A7', 5),
+('5 a.m Club', 'Robin Sharma', '9781443456623', 'Self-Help', 'Shelf A8', 3),
+('Mindset', 'Carol Dweck', '9780345472328', 'Self-Help', 'Shelf B1', 4),
+('The Power of Habit', 'Charles Duhigg', '9780812981605', 'Self-Help', 'Shelf B2', 5),
+('Deep Work', 'Cal Newport', '9781455586691', 'Productivity', 'Shelf B3', 3),
+('Grit', 'Angela Duckworth', '9781501111112', 'Self-Help', 'Shelf B4', 4),
+('The 7 Habits of Highly Effective People', 'Stephen R. Covey', '9780743269513', 'Self-Help', 'Shelf B5', 6),
+('Principles', 'Ray Dalio', '9781501124020', 'Finance', 'Shelf B6', 3),
+('The One Thing', 'Gary Keller', '9781885167774', 'Productivity', 'Shelf B7', 4),
+('Essentialism', 'Greg McKeown', '9780804137386', 'Productivity', 'Shelf B8', 3),
+('Thinking, Fast and Slow', 'Daniel Kahneman', '9780374533557', 'Psychology', 'Shelf B9', 5),
+('The Millionaire Next Door', 'Thomas J. Stanley', '9781589795471', 'Finance', 'Shelf B10', 4),
+('Tools of Titans', 'Tim Ferriss', '9781328683786', 'Self-Help', 'Shelf B11', 3),
+('The War of Art', 'Steven Pressfield', '9781936891023', 'Self-Help', 'Shelf B12', 3);
 
-IF NOT EXISTS (SELECT 1 FROM Books WHERE isbn = '9780596517748')
-    INSERT INTO Books (title, author, isbn, category, location, status, quantity)
-    VALUES ('JavaScript: The Good Parts', 'Douglas Crockford', '9780596517748', 'Web Development', 'Shelf B-1', 'Available', 4);
+-- Borrowings
+INSERT INTO Borrowings (user_id, book_id, borrow_date, due_date, status)
+VALUES
+(5, 1, GETDATE(), DATEADD(DAY, 14, GETDATE()), 'BORROWED'),  
+(6, 2, GETDATE(), DATEADD(DAY, 14, GETDATE()), 'BORROWED'),  
+(5, 5, GETDATE(), DATEADD(DAY, 14, GETDATE()), 'BORROWED'),  
+(6, 6, GETDATE(), DATEADD(DAY, 14, GETDATE()), 'BORROWED');  
 
-IF NOT EXISTS (SELECT 1 FROM Books WHERE isbn = '9781491950357')
-    INSERT INTO Books (title, author, isbn, category, location, status, quantity)
-    VALUES ('Learning Python', 'Mark Lutz', '9781491950357', 'Programming', 'Shelf B-2', 'Available', 3);
+-- Reservations
+INSERT INTO Reservations (user_id, book_id, reserved_at, status)
+VALUES
+(5, 3, GETDATE(), 'ACTIVE'),   
+(6, 4, GETDATE(), 'ACTIVE'),   
+(5, 7, GETDATE(), 'ACTIVE'),   
+(6, 10, GETDATE(), 'ACTIVE');  
 
-IF NOT EXISTS (SELECT 1 FROM Books WHERE isbn = '9780201485677')
-    INSERT INTO Books (title, author, isbn, category, location, status, quantity)
-    VALUES ('The Mythical Man-Month', 'Frederick P. Brooks Jr.', '9780201485677', 'Software Engineering', 'Shelf A-3', 'Available', 2);
+-- Notifications
+INSERT INTO Notifications (user_id, message, type, status)
+VALUES
+(5, 'Your book "Atomic Habits" is due in 3 days', 'DUE_DATE_REMINDER', 'UNREAD'),
+(6, 'Your reservation for "Think Like a Monk" is confirmed', 'RESERVATION_UPDATE', 'UNREAD');
 
-IF NOT EXISTS (SELECT 1 FROM Books WHERE isbn = '9781484200056')
-    INSERT INTO Books (title, author, isbn, category, location, status, quantity)
-    VALUES ('Spring Boot in Action', 'Craig Walls', '9781484200056', 'Java', 'Shelf C-1', 'Available', 2);
-
-IF NOT EXISTS (SELECT 1 FROM Books WHERE isbn = '9781492056355')
-    INSERT INTO Books (title, author, isbn, category, location, status, quantity)
-    VALUES ('Fundamentals of Software Architecture', 'Mark Richards & Neal Ford', '9781492056355', 'Software Engineering', 'Shelf A-4', 'Available', 2);
-
-IF NOT EXISTS (SELECT 1 FROM Books WHERE isbn = '9780134685991')
-    INSERT INTO Books (title, author, isbn, category, location, status, quantity)
-    VALUES ('Effective Java', 'Joshua Bloch', '9780134685991', 'Java', 'Shelf C-2', 'Available', 3);
-
-IF NOT EXISTS (SELECT 1 FROM Books WHERE isbn = '9781491927282')
-    INSERT INTO Books (title, author, isbn, category, location, status, quantity)
-    VALUES ('Introducing GitHub', 'Brent Beer', '9781491927282', 'Version Control', 'Shelf D-1', 'Available', 1);
-
-IF NOT EXISTS (SELECT 1 FROM Books WHERE isbn = '9780596803360')
-    INSERT INTO Books (title, author, isbn, category, location, status, quantity)
-    VALUES ('Beautiful Code: Leading Programmers Explain How They Think', 'Andy Oram & Greg Wilson', '9780596803360', 'Programming', 'Shelf B-3', 'Available', 2);
-GO
-
-PRINT 'Seed data inserted successfully.';
-PRINT '';
-PRINT 'Default login credentials:';
-PRINT '  Admin  → username: admin    | password: admin';
-PRINT '  Staff  → username: staff    | password: staff';
-PRINT '  User   → username: john_doe | password: password';
+-- System Logs
+INSERT INTO SystemLogs (user_id, action, details)
+VALUES
+(5, 'BORROW_BOOK', 'Borrowed Atomic Habits'),
+(6, 'BORROW_BOOK', 'Borrowed Think Like a Monk'),
+(5, 'RESERVE_BOOK', 'Reserved 48 Laws of Power'),
+(6, 'RESERVE_BOOK', 'Reserved Dopamine Detox');
 GO
