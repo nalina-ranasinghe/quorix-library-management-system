@@ -19,9 +19,12 @@ public class ReportLogService {
 
     public void logReportGeneration(String reportName, String username) {
         // Find the user's ID from their username
-        int userId = userRepository.findByUsernameIgnoreCase(username)
-                .orElseThrow(() -> new IllegalArgumentException("Attempted to log report for non-existent user."))
-                .getUserId();
+        java.util.Optional<com.library.app.entity.User> userOpt = userRepository.findByUsernameIgnoreCase(username);
+        if (userOpt.isEmpty()) {
+            System.err.println("Warning: Attempted to log report for non-existent user: " + username);
+            return;
+        }
+        int userId = userOpt.get().getUserId();
 
         // Save the log with a 'SUCCESS' status
         reportLogRepository.save(reportName, userId, "SUCCESS");
