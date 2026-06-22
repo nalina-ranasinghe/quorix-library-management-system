@@ -261,12 +261,45 @@ This project was developed by **Group 16** as part of the *SE2030 — Software E
   
   <img src="Screenshots/2_admin_dashboard.png" alt="Admin Dashboard" width="800">
   <br><em>Admin Dashboard</em><br><br>
-  
-  <img src="Screenshots/3_book_catalog.png" alt="Book Catalog" width="800">
-  <br><em>Book Catalog</em><br><br>
 
-  <img src="Screenshots/4_users_management.png" alt="Users Management" width="800">
-  <br><em>Users Management</em>
+  <img src="Screenshots/3_user_management.png" alt="User Management" width="800">
+  <br><em>User Management</em><br><br>
+
+  <img src="Screenshots/4_admin_reports.png" alt="Admin Reports" width="800">
+  <br><em>Admin Reports</em><br><br>
+
+  <img src="Screenshots/5_usage_patterns.png" alt="Usage Patterns" width="800">
+  <br><em>Usage Patterns</em><br><br>
+
+  <img src="Screenshots/6_pending_approvals.png" alt="Pending Approvals" width="800">
+  <br><em>Pending Approvals</em><br><br>
+
+  <img src="Screenshots/7_announcements.png" alt="Announcements" width="800">
+  <br><em>Announcements</em><br><br>
+
+  <img src="Screenshots/8_library_management.png" alt="Staff - Library Management" width="800">
+  <br><em>Staff - Library Management</em><br><br>
+
+  <img src="Screenshots/9_book_catalog.png" alt="Book Catalog (User View)" width="800">
+  <br><em>Book Catalog (User View)</em><br><br>
+
+  <img src="Screenshots/10_add_book.png" alt="Add Book Form" width="800">
+  <br><em>Add Book Form</em><br><br>
+
+  <img src="Screenshots/11_missing_books.png" alt="Missing Books List" width="800">
+  <br><em>Missing Books List</em><br><br>
+
+  <img src="Screenshots/12_user_home.png" alt="User Home" width="800">
+  <br><em>User Home</em><br><br>
+
+  <img src="Screenshots/13_user_account.png" alt="User Account Details" width="800">
+  <br><em>User Account Details</em><br><br>
+
+  <img src="Screenshots/14_user_notifications.png" alt="User Notifications" width="800">
+  <br><em>User Notifications</em><br><br>
+
+  <img src="Screenshots/15_user_settings.png" alt="User Settings" width="800">
+  <br><em>User Settings</em>
 </p>
 
 ---
