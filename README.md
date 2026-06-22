@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="src/main/resources/static/images/quorix-logo.png" alt="Quorix Logo" width="220" />
+<img src="src/main/resources/static/images/quorix-logo.png" alt="Quorix Logo" width="440" />
 
 # 📚 Quorix Library Management System
 
@@ -240,7 +240,7 @@ src/
 
 ## 👥 Team & Contributions
 
-This project was developed by **Group 16** as part of the *SE2030 — Software Engineering* module in Year 2, Semester 1 at SLIIT.
+This project was developed by **2025-Y2-S1-KU-16** as part of the *SE2030 — Software Engineering* module in Year 2, Semester 1 at SLIIT.
 
 | Member | Role & Contributions |
 |---|---|
@@ -299,7 +299,13 @@ This project was developed by **Group 16** as part of the *SE2030 — Software E
   <br><em>User Notifications</em><br><br>
 
   <img src="Screenshots/15_user_settings.png" alt="User Settings" width="800">
-  <br><em>User Settings</em>
+  <br><em>User Settings</em><br><br>
+
+  <img src="Screenshots/16_book_reservation_confirmation_email.png" alt="Book Reservation Confirmation Email" width="800">
+  <br><em>Book Reservation Confirmation Email</em><br><br>
+
+  <img src="Screenshots/17_library_notification_email.png" alt="Library Notification Email" width="800">
+  <br><em>Library Notification Email</em>
 </p>
 
 ---
@@ -312,6 +318,6 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 <div align="center">
 
-Made with ❤️ by Group 16 — SLIIT, 2025
+Made with ❤️ by 2025-Y2-S1-KU-16 — SLIIT, 2025
 
 </div>
