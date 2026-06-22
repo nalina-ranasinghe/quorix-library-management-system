@@ -2,7 +2,7 @@
 
 <img src="src/main/resources/static/images/quorix-logo.png" alt="Quorix Logo" width="440" />
 
-# 📚 Quorix Library Management System
+# Library Management System
 
 **A full-stack web application for managing a digital library — built by a team of six university students.**
 
@@ -240,7 +240,7 @@ src/
 
 ## 👥 Team & Contributions
 
-This project was developed by **2025-Y2-S1-KU-16** as part of the *SE2030 — Software Engineering* module in Year 2, Semester 1 at SLIIT.
+This project was developed by **Group 16** as part of the *SE2030 — Software Engineering* module in Year 2, Semester 1 at SLIIT.
 
 | Member | Role & Contributions |
 |---|---|
@@ -281,7 +281,7 @@ This project was developed by **2025-Y2-S1-KU-16** as part of the *SE2030 — So
   <br><em>Staff - Library Management</em><br><br>
 
   <img src="Screenshots/9_book_catalog.png" alt="Book Catalog (User View)" width="800">
-  <br><em>Book Catalog (User View)</em><br><br>
+  <br><em>Book Catalog</em><br><br>
 
   <img src="Screenshots/10_add_book.png" alt="Add Book Form" width="800">
   <br><em>Add Book Form</em><br><br>
